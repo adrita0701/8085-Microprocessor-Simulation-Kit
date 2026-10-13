@@ -1,0 +1,1717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8085 Microprocessor Trainer Kit (LGSB13-108_V1.1)</title>
+    <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            margin: 0;
+            padding: 16px;
+            background: #141619;
+            color: #e5e7eb;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .top-guide-bar {
+            max-width: 1020px;
+            width: 100%;
+            margin-bottom: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            font-size: 12px;
+            color: #cbd5e1;
+        }
+
+        kbd {
+            background: #1e293b;
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid #475569;
+            color: #fcd34d;
+            font-family: monospace;
+            font-weight: 700;
+        }
+
+        /* =====================================================================
+           WOODEN CASE ENCLOSURE (Matches College Lab Wooden Box)
+           ===================================================================== */
+        .wooden-case {
+            background: linear-gradient(135deg, #d7b377 0%, #c49a57 45%, #b58946 100%);
+            padding: 22px;
+            border-radius: 10px;
+            box-shadow: 
+                0 20px 50px rgba(0,0,0,0.85),
+                inset 0 2px 3px rgba(255,255,255,0.4),
+                inset 0 -4px 8px rgba(0,0,0,0.4);
+            border: 3px solid #8c662b;
+            position: relative;
+            max-width: 1020px;
+            width: 100%;
+        }
+
+        .wooden-case::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                90deg,
+                rgba(120, 75, 20, 0.04) 0px,
+                rgba(120, 75, 20, 0.04) 3px,
+                transparent 3px,
+                transparent 9px
+            );
+            pointer-events: none;
+            border-radius: 8px;
+        }
+
+        .wood-inner-well {
+            background: #061c0f;
+            padding: 6px;
+            border-radius: 6px;
+            box-shadow: inset 0 6px 16px rgba(0,0,0,0.9);
+            border: 2px solid #6e4e1e;
+        }
+
+        .wood-marking-right {
+            position: absolute;
+            right: 4px;
+            top: 38%;
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            font-family: "Comic Sans MS", "Bradley Hand", cursive, sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            color: rgba(35, 45, 75, 0.65);
+            letter-spacing: 2px;
+            pointer-events: none;
+        }
+
+        .wood-marking-bottom {
+            position: absolute;
+            bottom: 3px;
+            left: 160px;
+            font-family: "Courier New", monospace;
+            font-size: 12px;
+            font-weight: 700;
+            color: rgba(30, 30, 30, 0.6);
+            letter-spacing: 6px;
+            pointer-events: none;
+        }
+
+        /* =====================================================================
+           GREEN PCB BOARD (LGSB13-108_V1.1)
+           ===================================================================== */
+        .pcb-surface {
+            background: radial-gradient(circle at 60% 50%, #146938 0%, #0e522b 60%, #093d1f 100%);
+            border: 2px solid #237a46;
+            border-radius: 4px;
+            padding: 18px 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.55);
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 860px) {
+            .pcb-surface {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .pcb-surface::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(to right, rgba(120, 230, 160, 0.08) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(120, 230, 160, 0.08) 1px, transparent 1px),
+                radial-gradient(circle, rgba(210, 230, 200, 0.18) 1px, transparent 1.5px);
+            background-size: 18px 18px, 18px 18px, 18px 18px;
+            pointer-events: none;
+        }
+
+        .pcb-screw {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            background: radial-gradient(circle, #f3f4f6 30%, #9ca3af 70%, #374151 100%);
+            border-radius: 50%;
+            border: 1.5px solid #d1d5db;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.8);
+            z-index: 5;
+        }
+        .pcb-screw::after {
+            content: "";
+            position: absolute;
+            top: 6px; left: 2px; right: 2px; height: 1.5px;
+            background: #374151;
+            transform: rotate(35deg);
+        }
+        .screw-1 { top: 6px; left: 6px; }
+        .screw-2 { top: 6px; right: 6px; }
+        .screw-3 { bottom: 6px; left: 6px; }
+        .screw-4 { bottom: 6px; right: 6px; }
+
+        /* =====================================================================
+           LEFT / TOP PCB HARDWARE COMPONENTS
+           ===================================================================== */
+        .pcb-hardware-zone {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 12px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .ic-bank-top {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            padding: 8px;
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 4px;
+            background: rgba(0,0,0,0.15);
+        }
+
+        .dip-ic {
+            background: linear-gradient(90deg, #181a1d 0%, #24272c 50%, #16181b 100%);
+            border: 1px solid #374151;
+            border-radius: 2px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 4px;
+            box-shadow: 2px 4px 6px rgba(0,0,0,0.75);
+            color: #9ca3af;
+            font-family: "Consolas", monospace;
+            font-size: 8px;
+            text-align: center;
+        }
+
+        .dip-ic::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 4px;
+            background: #0d3b20;
+            border-radius: 0 0 6px 6px;
+            border: 1px solid #4b5563;
+            border-top: none;
+        }
+
+        .dip-ic-pins {
+            border-left: 3px dashed #cbd5e1;
+            border-right: 3px dashed #cbd5e1;
+        }
+
+        .dip-ic-horizontal {
+            background: linear-gradient(180deg, #181a1d 0%, #25282e 50%, #15171a 100%);
+            border-top: 3px dashed #cbd5e1;
+            border-bottom: 3px dashed #cbd5e1;
+            padding: 10px 14px;
+            border-radius: 2px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.8);
+            font-family: "Consolas", monospace;
+            font-size: 10px;
+            color: #d1d5db;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cmos-battery {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #374151 0%, #111827 80%);
+            border: 2px solid #9ca3af;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 7px;
+            color: #d1d5db;
+            font-family: monospace;
+            position: relative;
+        }
+        .cmos-battery::after {
+            content: "+ CR2032";
+        }
+
+        .frc-connector {
+            background: #111315;
+            border: 2px solid #2d3238;
+            padding: 5px 10px;
+            border-radius: 2px;
+            box-shadow: inset 0 0 6px #000, 0 2px 4px rgba(0,0,0,0.8);
+            display: flex;
+            gap: 4px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .frc-pin {
+            width: 3px;
+            height: 3px;
+            background: #eab308;
+            border-radius: 50%;
+        }
+
+        .silkscreen-text {
+            font-family: "Consolas", "Courier New", monospace;
+            font-size: 9px;
+            font-weight: 700;
+            color: rgba(240, 253, 244, 0.85);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* =====================================================================
+           RIGHT ZONE: 6-DIGIT RED 7-SEGMENT DISPLAY BAR + 4x7 KEYPAD
+           ===================================================================== */
+        .pcb-interactive-zone {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 14px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .red-acrylic-bezel {
+            background: linear-gradient(180deg, #3b0404 0%, #240202 55%, #160101 100%);
+            border: 2px solid #5c0a0a;
+            border-radius: 5px;
+            padding: 12px 26px;
+            box-shadow: 
+                0 8px 18px rgba(0,0,0,0.85),
+                inset 0 1px 2px rgba(255, 120, 120, 0.25),
+                inset 0 0 20px rgba(0,0,0,0.9);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .red-acrylic-bezel::before {
+            content: "";
+            position: absolute;
+            top: 1px; left: 2px; right: 2px; height: 42%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.09) 0%, transparent 100%);
+            pointer-events: none;
+            border-radius: 3px 3px 0 0;
+        }
+
+        .bezel-screw {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #ffffff 20%, #9ca3af 70%, #374151 100%);
+            border: 1px solid #4b5563;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.9);
+            flex-shrink: 0;
+        }
+
+        .seven-seg-row {
+            display: flex;
+            align-items: center;
+            gap: 26px;
+            margin: 0 auto;
+        }
+
+        .seg-group-addr, .seg-group-data {
+            display: flex;
+            gap: 8px;
+        }
+
+        .seg-digit-box {
+            background: #140101;
+            border: 1px solid #2d0404;
+            border-radius: 3px;
+            width: 44px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.95);
+        }
+
+        .seg-digit-ghost {
+            position: absolute;
+            font-family: "Consolas", "Courier New", monospace;
+            font-size: 42px;
+            font-weight: 900;
+            color: rgba(255, 30, 30, 0.07);
+            line-height: 1;
+            pointer-events: none;
+        }
+
+        .seg-digit-char {
+            position: relative;
+            font-family: "Consolas", "Courier New", monospace;
+            font-size: 42px;
+            font-weight: 900;
+            color: #ff2222;
+            text-shadow: 
+                0 0 8px rgba(255, 34, 34, 0.95),
+                0 0 18px rgba(255, 20, 20, 0.6);
+            line-height: 1;
+            z-index: 2;
+        }
+
+        .seg-dp {
+            position: absolute;
+            bottom: 5px;
+            right: 4px;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: rgba(255, 30, 30, 0.1);
+        }
+
+        .seg-dp.lit {
+            background: #ff2a2a;
+            box-shadow: 0 0 6px #ff2a2a, 0 0 12px #ff2a2a;
+        }
+
+        /* =====================================================================
+           EXACT 4 x 7 RED-ORANGE KEYPAD MATRIX
+           ===================================================================== */
+        .keypad-housing {
+            background: #0b140e;
+            border: 2px solid #1e3a29;
+            border-radius: 6px;
+            padding: 12px;
+            box-shadow: inset 0 4px 12px rgba(0,0,0,0.9), 0 4px 10px rgba(0,0,0,0.6);
+        }
+
+        .keypad-matrix-4x7 {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .trainer-key {
+            background: linear-gradient(145deg, #ff6347 0%, #e04328 60%, #b82d14 100%);
+            border: 1px solid #91200c;
+            border-bottom: 4px solid #731607;
+            border-right: 3px solid #851b09;
+            border-radius: 6px;
+            padding: 6px;
+            height: 62px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.75);
+            transition: transform 0.04s ease, box-shadow 0.04s ease, filter 0.1s ease;
+        }
+
+        .trainer-key:hover {
+            filter: brightness(1.06);
+        }
+
+        .trainer-key:active,
+        .trainer-key.pressed {
+            transform: translateY(3px);
+            border-bottom-width: 1px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.8);
+            filter: brightness(0.95);
+        }
+
+        .key-cap-insert {
+            background: linear-gradient(180deg, #fbfaf8 0%, #e6e2d8 100%);
+            border: 1px solid #b8b2a6;
+            border-radius: 3px;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 1px 1px #ffffff, 0 1px 2px rgba(0,0,0,0.35);
+            padding: 2px;
+        }
+
+        .key-label {
+            font-family: "Arial Narrow", Arial, Helvetica, sans-serif;
+            font-size: 13px;
+            font-weight: 900;
+            color: #18181b;
+            letter-spacing: 0.3px;
+            line-height: 1;
+        }
+
+        .key-label.hex-num {
+            font-size: 16px;
+        }
+
+        .key-shortcut-hint {
+            font-size: 8px;
+            font-family: monospace;
+            color: #71717a;
+            margin-top: 2px;
+            font-weight: 600;
+        }
+
+        .lab-bench-panel {
+            max-width: 1020px;
+            width: 100%;
+            margin-top: 14px;
+            background: #1c2026;
+            border: 1px solid #2e3640;
+            border-radius: 8px;
+            padding: 12px 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+        }
+
+        .reg-pill {
+            background: #0f1318;
+            border: 1px solid #2b3542;
+            border-radius: 5px;
+            padding: 4px 8px;
+            font-family: "Consolas", monospace;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .reg-pill .r-lbl { color: #38bdf8; font-weight: 700; }
+        .reg-pill .r-val { color: #f8fafc; font-weight: 800; }
+
+        .flag-pill {
+            background: #0f1318;
+            border: 1px solid #2b3542;
+            border-radius: 4px;
+            padding: 2px 7px;
+            font-family: "Consolas", monospace;
+            font-size: 11px;
+            color: #9ca3af;
+        }
+        .flag-pill.on {
+            background: #3b1219;
+            border-color: #f43f5e;
+            color: #fda4af;
+            font-weight: 800;
+        }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <!-- Top Quick How-To Strip -->
+    <div class="top-guide-bar">
+        <div>
+            <span style="background:#047857; color:#fff; font-weight:700; padding:2px 6px; border-radius:4px; font-size:11px; margin-right:6px;">LGSB13-108_V1.1</span>
+            <span><b>Enter Program:</b> <kbd>RST</kbd> → <kbd>SUB</kbd> → Type Address (e.g. <b>2000</b>) → <kbd>ENTER</kbd> → Type Hex Byte → <kbd>ENTER</kbd></span>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px;">
+            <span><b>Run:</b> <kbd>RST</kbd> → <kbd>EXE</kbd> → Type Start Addr (<b>2000</b>) → <kbd>ENTER</kbd></span>
+            <button id="btnAudioToggle" style="background:#1e293b; border:1px solid #475569; color:#7dd3fc; padding:2px 8px; border-radius:4px; font-size:11px; cursor:pointer;">🔊 Beep ON</button>
+        </div>
+    </div>
+
+    <!-- =====================================================================
+         PHYSICAL 8085 TRAINER KIT IN WOODEN CASE
+         ===================================================================== -->
+    <div class="wooden-case">
+        <div class="wood-marking-right">MCA 1st YEAR</div>
+        <div class="wood-marking-bottom">X X X</div>
+
+        <div class="wood-inner-well">
+            <div class="pcb-surface">
+                <!-- 4 Corner Screws -->
+                <div class="pcb-screw screw-1"></div>
+                <div class="pcb-screw screw-2"></div>
+                <div class="pcb-screw screw-3"></div>
+                <div class="pcb-screw screw-4"></div>
+
+                <!-- LEFT ZONE: Realistic Hardware ICs & Components -->
+                <div class="pcb-hardware-zone">
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding:0 6px;">
+                        <div class="frc-connector" style="width: 70px;">
+                            <div class="frc-pin"></div><div class="frc-pin"></div><div class="frc-pin"></div><div class="frc-pin"></div>
+                        </div>
+                        <span class="silkscreen-text">8085 MONITOR V2.1</span>
+                        <div class="frc-connector" style="width: 90px;">
+                            <div class="frc-pin"></div><div class="frc-pin"></div><div class="frc-pin"></div><div class="frc-pin"></div><div class="frc-pin"></div>
+                        </div>
+                    </div>
+
+                    <div class="ic-bank-top">
+                        <div class="dip-ic dip-ic-pins" style="height: 82px;">
+                            <div style="font-weight:700; color:#cbd5e1;">27C64</div>
+                            <div>EPROM</div>
+                            <div style="margin-top:4px; font-size:7px;">U4</div>
+                        </div>
+                        <div class="dip-ic dip-ic-pins" style="height: 82px;">
+                            <div style="font-weight:700; color:#cbd5e1;">6264</div>
+                            <div>SRAM</div>
+                            <div style="margin-top:4px; font-size:7px;">U5</div>
+                        </div>
+                        <div class="dip-ic dip-ic-pins" style="height: 82px;">
+                            <div style="font-weight:700; color:#cbd5e1;">Winbond</div>
+                            <div>W27C512</div>
+                            <div style="margin-top:4px; font-size:7px;">U6</div>
+                        </div>
+                        <div class="dip-ic dip-ic-pins" style="height: 82px;">
+                            <div style="font-weight:700; color:#cbd5e1;">8255A</div>
+                            <div>PPI</div>
+                            <div style="margin-top:4px; font-size:7px;">U7</div>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; padding:0 4px;">
+                        <div style="display:flex; flex-direction:column; align-items:center; gap:4px;">
+                            <div style="display:flex; align-items:center; gap:6px;">
+                                <div style="width:12px; height:12px; border-radius:50%; background:#ef4444; box-shadow:0 0 8px #ef4444;"></div>
+                                <span class="silkscreen-text" style="font-size:8px;">POWER ON</span>
+                            </div>
+                            <div class="cmos-battery"></div>
+                            <span class="silkscreen-text" style="font-size:8px;">BATTERY</span>
+                        </div>
+
+                        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; flex:1; padding-left:8px;">
+                            <div class="dip-ic dip-ic-pins" style="height: 46px;"><span>74LS373</span><span style="font-size:7px;">U8</span></div>
+                            <div class="dip-ic dip-ic-pins" style="height: 46px;"><span>74LS138</span><span style="font-size:7px;">U9</span></div>
+                            <div class="dip-ic dip-ic-pins" style="height: 46px;"><span>74LS04</span><span style="font-size:7px;">U10</span></div>
+                            <div class="dip-ic dip-ic-pins" style="height: 46px;"><span>74LS245</span><span style="font-size:7px;">U11</span></div>
+                            <div class="dip-ic dip-ic-pins" style="height: 46px;"><span>74LS74</span><span style="font-size:7px;">U12</span></div>
+                            <div class="dip-ic dip-ic-pins" style="height: 46px;"><span>74LS08</span><span style="font-size:7px;">U13</span></div>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; flex-direction:column; gap:8px;">
+                        <div class="dip-ic-horizontal">
+                            <div>
+                                <div style="font-weight:700; color:#fff; font-size:12px;">INTEL P8085AH-2</div>
+                                <div style="font-size:8px; color:#9ca3af;">40-PIN HMOS 8-BIT MICROPROCESSOR • 6.144 MHz</div>
+                            </div>
+                            <span class="silkscreen-text">U1 (CPU)</span>
+                        </div>
+
+                        <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
+                            <div class="frc-connector" style="flex:1;">
+                                <span class="silkscreen-text" style="font-size:8px; color:#fcd34d;">FRC2 SYSTEM BUS (26-PIN)</span>
+                            </div>
+                            <div class="dip-ic dip-ic-pins" style="padding:6px 12px;"><span>SN74LS244N</span></div>
+                            <div class="dip-ic dip-ic-pins" style="padding:6px 12px;"><span>MAX232N</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT ZONE: 6-Digit Red 7-Segment Display + 4x7 Keypad -->
+                <div class="pcb-interactive-zone">
+
+                    <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+                        <div class="dip-ic-horizontal" style="flex:1; padding:8px 14px;">
+                            <div>
+                                <div style="font-weight:700; color:#e5e7eb; font-size:11px;">INTEL P8279-5</div>
+                                <div style="font-size:8px; color:#9ca3af;">PROGRAMMABLE KEYBOARD / DISPLAY INTERFACE</div>
+                            </div>
+                            <span class="silkscreen-text">U3</span>
+                        </div>
+                        <div class="frc-connector" style="padding:10px 16px;">
+                            <span class="silkscreen-text" style="font-size:8px; color:#fcd34d;">J1 (40-PIN I/O)</span>
+                        </div>
+                    </div>
+
+                    <!-- 6-DIGIT RED 7-SEGMENT LED DISPLAY BAR -->
+                    <div>
+                        <div style="display:flex; justify-content:space-between; padding:0 32px; margin-bottom:2px;">
+                            <span class="silkscreen-text" style="font-size:9px; color:#fde68a;">ADDRESS / REGISTER FIELD (4 DIGITS)</span>
+                            <span class="silkscreen-text" style="font-size:9px; color:#fde68a;">DATA FIELD (2 DIGITS)</span>
+                        </div>
+                        <div class="red-acrylic-bezel">
+                            <div class="bezel-screw"></div>
+
+                            <div class="seven-seg-row">
+                                <div class="seg-group-addr">
+                                    <div class="seg-digit-box">
+                                        <span class="seg-digit-ghost">8</span>
+                                        <span class="seg-digit-char" id="d0">-</span>
+                                        <div class="seg-dp" id="dp0"></div>
+                                    </div>
+                                    <div class="seg-digit-box">
+                                        <span class="seg-digit-ghost">8</span>
+                                        <span class="seg-digit-char" id="d1">U</span>
+                                        <div class="seg-dp" id="dp1"></div>
+                                    </div>
+                                    <div class="seg-digit-box">
+                                        <span class="seg-digit-ghost">8</span>
+                                        <span class="seg-digit-char" id="d2">P</span>
+                                        <div class="seg-dp" id="dp2"></div>
+                                    </div>
+                                    <div class="seg-digit-box">
+                                        <span class="seg-digit-ghost">8</span>
+                                        <span class="seg-digit-char" id="d3">8</span>
+                                        <div class="seg-dp" id="dp3"></div>
+                                    </div>
+                                </div>
+
+                                <div class="seg-group-data">
+                                    <div class="seg-digit-box">
+                                        <span class="seg-digit-ghost">8</span>
+                                        <span class="seg-digit-char" id="d4">5</span>
+                                        <div class="seg-dp" id="dp4"></div>
+                                    </div>
+                                    <div class="seg-digit-box">
+                                        <span class="seg-digit-ghost">8</span>
+                                        <span class="seg-digit-char" id="d5"> </span>
+                                        <div class="seg-dp" id="dp5"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bezel-screw"></div>
+                        </div>
+                    </div>
+
+                    <!-- EXACT 4 x 7 KEYPAD MATRIX FROM PHOTO -->
+                    <div class="keypad-housing">
+                        <div class="keypad-matrix-4x7">
+                            <!-- ROW 1: RST | ESC | SUB | C | D | E | F -->
+                            <button class="trainer-key" data-key="RST" title="Reset Trainer Kit (Keyboard: R)">
+                                <div class="key-cap-insert">
+                                    <span class="key-label">RST</span>
+                                    <span class="key-shortcut-hint">[R]</span>
+                                </div>
+                            </button>
+                            <button class="trainer-key" data-key="ESC" title="Escape / Cancel (Keyboard: Esc)">
+                                <div class="key-cap-insert">
+                                    <span class="key-label">ESC</span>
+                                    <span class="key-shortcut-hint">[Esc]</span>
+                                </div>
+                            </button>
+                            <button class="trainer-key" data-key="SUB" title="Substitute Memory / Inspect Address (Keyboard: S)">
+                                <div class="key-cap-insert">
+                                    <span class="key-label">SUB</span>
+                                    <span class="key-shortcut-hint">[S]</span>
+                                </div>
+                            </button>
+                            <button class="trainer-key" data-key="C"><div class="key-cap-insert"><span class="key-label hex-num">C</span></div></button>
+                            <button class="trainer-key" data-key="D"><div class="key-cap-insert"><span class="key-label hex-num">D</span></div></button>
+                            <button class="trainer-key" data-key="E"><div class="key-cap-insert"><span class="key-label hex-num">E</span></div></button>
+                            <button class="trainer-key" data-key="F"><div class="key-cap-insert"><span class="key-label hex-num">F</span></div></button>
+
+                            <!-- ROW 2: SI/P | COMP | MOV | 8 | 9 | A | B -->
+                            <button class="trainer-key" data-key="SI/P" title="Single Step Instruction (Keyboard: Space / I)">
+                                <div class="key-cap-insert">
+                                    <span class="key-label">SI/P</span>
+                                    <span class="key-shortcut-hint">[Step]</span>
+                                </div>
+                            </button>
+                            <button class="trainer-key" data-key="COMP" title="Complement Accumulator">
+                                <div class="key-cap-insert"><span class="key-label">COMP</span></div>
+                            </button>
+                            <button class="trainer-key" data-key="MOV" title="Block Move Memory">
+                                <div class="key-cap-insert"><span class="key-label">MOV</span></div>
+                            </button>
+                            <button class="trainer-key" data-key="8"><div class="key-cap-insert"><span class="key-label hex-num">8</span></div></button>
+                            <button class="trainer-key" data-key="9"><div class="key-cap-insert"><span class="key-label hex-num">9</span></div></button>
+                            <button class="trainer-key" data-key="A"><div class="key-cap-insert"><span class="key-label hex-num">A</span></div></button>
+                            <button class="trainer-key" data-key="B"><div class="key-cap-insert"><span class="key-label hex-num">B</span></div></button>
+
+                            <!-- ROW 3: SO/P | USER | USER | 4 | 5 | 6 | 7 -->
+                            <button class="trainer-key" data-key="SO/P" title="Output Port">
+                                <div class="key-cap-insert"><span class="key-label">SO/P</span></div>
+                            </button>
+                            <button class="trainer-key" data-key="USER1" title="Examine Registers (Keyboard: U)">
+                                <div class="key-cap-insert">
+                                    <span class="key-label">USER</span>
+                                    <span class="key-shortcut-hint">[Reg]</span>
+                                </div>
+                            </button>
+                            <button class="trainer-key" data-key="USER2" title="Examine Registers">
+                                <div class="key-cap-insert"><span class="key-label">USER</span></div>
+                            </button>
+                            <button class="trainer-key" data-key="4"><div class="key-cap-insert"><span class="key-label hex-num">4</span></div></button>
+                            <button class="trainer-key" data-key="5"><div class="key-cap-insert"><span class="key-label hex-num">5</span></div></button>
+                            <button class="trainer-key" data-key="6"><div class="key-cap-insert"><span class="key-label hex-num">6</span></div></button>
+                            <button class="trainer-key" data-key="7"><div class="key-cap-insert"><span class="key-label hex-num">7</span></div></button>
+
+                            <!-- ROW 4: PREV | ENTER | EXE | 0 | 1 | 2 | 3 -->
+                            <button class="trainer-key" data-key="PREV" title="Previous Memory Address (Keyboard: Backspace / -)">
+                                <div class="key-cap-insert">
+                                    <span class="key-label">PREV</span>
+                                    <span class="key-shortcut-hint">[-]</span>
+                                </div>
+                            </button>
+                            <button class="trainer-key" data-key="ENTER" title="Enter / Next Memory Address (Keyboard: Enter)">
+                                <div class="key-cap-insert">
+                                    <span class="key-label">ENTER</span>
+                                    <span class="key-shortcut-hint">[Ent]</span>
+                                </div>
+                            </button>
+                            <button class="trainer-key" data-key="EXE" title="Execute Program (Keyboard: X or G)">
+                                <div class="key-cap-insert">
+                                    <span class="key-label">EXE</span>
+                                    <span class="key-shortcut-hint">[X]</span>
+                                </div>
+                            </button>
+                            <button class="trainer-key" data-key="0"><div class="key-cap-insert"><span class="key-label hex-num">0</span></div></button>
+                            <button class="trainer-key" data-key="1"><div class="key-cap-insert"><span class="key-label hex-num">1</span></div></button>
+                            <button class="trainer-key" data-key="2"><div class="key-cap-insert"><span class="key-label hex-num">2</span></div></button>
+                            <button class="trainer-key" data-key="3"><div class="key-cap-insert"><span class="key-label hex-num">3</span></div></button>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding:0 4px;">
+                        <span class="silkscreen-text" style="font-size:12px; letter-spacing:1px;">LGSB13-108_V1.1</span>
+                        <span class="silkscreen-text" style="font-size:10px; color:#6ee7b7;" id="kitStatusLine">STATE: MONITOR STANDBY (-UP85)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =====================================================================
+         COMPACT LIVE CPU REGISTER & MEMORY MONITOR BAR
+         ===================================================================== -->
+    <div class="lab-bench-panel">
+        <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px; padding-bottom:10px; margin-bottom:10px; border-bottom:1px solid #334155;">
+            <div style="display:flex; flex-wrap:wrap; align-items:center; gap:6px;">
+                <span style="font-size:11px; font-weight:700; color:#fbbf24; margin-right:4px;">8085 REGISTERS:</span>
+                <div class="reg-pill"><span class="r-lbl">A</span><span class="r-val" id="regA">00</span></div>
+                <div class="reg-pill"><span class="r-lbl">B</span><span class="r-val" id="regB">00</span></div>
+                <div class="reg-pill"><span class="r-lbl">C</span><span class="r-val" id="regC">00</span></div>
+                <div class="reg-pill"><span class="r-lbl">D</span><span class="r-val" id="regD">00</span></div>
+                <div class="reg-pill"><span class="r-lbl">E</span><span class="r-val" id="regE">00</span></div>
+                <div class="reg-pill"><span class="r-lbl">H</span><span class="r-val" id="regH">00</span></div>
+                <div class="reg-pill"><span class="r-lbl">L</span><span class="r-val" id="regL">00</span></div>
+                <div class="reg-pill"><span class="r-lbl">M[HL]</span><span class="r-val" id="regM">00</span></div>
+                <div class="reg-pill"><span class="r-lbl">PC</span><span class="r-val" id="regPC">8000</span></div>
+                <div class="reg-pill"><span class="r-lbl">SP</span><span class="r-val" id="regSP">27FF</span></div>
+            </div>
+
+            <div style="display:flex; align-items:center; gap:4px;">
+                <span style="font-size:11px; font-weight:700; color:#9ca3af; margin-right:4px;">FLAGS:</span>
+                <span class="flag-pill" id="flgS">S=0</span>
+                <span class="flag-pill" id="flgZ">Z=0</span>
+                <span class="flag-pill" id="flgAC">AC=0</span>
+                <span class="flag-pill" id="flgP">P=0</span>
+                <span class="flag-pill" id="flgCY">CY=0</span>
+            </div>
+        </div>
+
+        <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px; font-size:12px;">
+            <div style="font-family:monospace; color:#6ee7b7;" id="lastActionLog">
+                Ready. Press [RST] → [SUB] → [ENTER] → [ENTER] → Type address (8000) → [ENTER] → Enter opcodes.
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+                <button id="btnToggleMemPeek" style="background:#1e293b; border:1px solid #475569; color:#e2e8f0; padding:4px 10px; border-radius:4px; cursor:pointer; font-size:12px;">📋 View Entered Memory</button>
+                <button id="btnToggleOpcodeSheet" style="background:#1e293b; border:1px solid #475569; color:#fcd34d; padding:4px 10px; border-radius:4px; cursor:pointer; font-size:12px;">📖 8085 Opcode Sheet</button>
+                <button id="btnClearRam" style="background:#450a0a; border:1px solid #991b1b; color:#fecaca; padding:4px 10px; border-radius:4px; cursor:pointer; font-size:12px;">🗑️ Clear All RAM</button>
+            </div>
+        </div>
+
+        <div id="memPeekDrawer" class="hidden" style="margin-top:12px; padding-top:12px; border-top:1px solid #334155;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+                <span style="font-size:12px; font-weight:700; color:#38bdf8;">MEMORY INSPECTOR:</span>
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span style="font-size:12px; color:#9ca3af;">Start Addr:</span>
+                    <input id="inpMemBase" type="text" value="8000" maxlength="4" style="background:#0f172a; border:1px solid #334155; color:#7dd3fc; font-family:monospace; font-size:12px; padding:2px 6px; border-radius:4px; width:64px; text-transform:uppercase;">
+                </div>
+            </div>
+            <div id="memDumpGrid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(105px, 1fr)); gap:6px; font-family:monospace; font-size:12px; background:#090d12; padding:10px; border-radius:6px; border:1px solid #1e293b;"></div>
+        </div>
+
+        <div id="opcodeSheetDrawer" class="hidden" style="margin-top:12px; padding-top:12px; border-top:1px solid #334155; font-size:12px;">
+            <div style="font-weight:700; color:#fcd34d; margin-bottom:8px;">COMMON 8085 LAB HEX OPCODES CHEAT SHEET:</div>
+            <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(145px, 1fr)); gap:6px; font-family:monospace; font-size:11px; background:#090d12; padding:12px; border-radius:6px; border:1px solid #1e293b;">
+                <div><b style="color:#fbbf24;">3E d8</b> : MVI A, d8</div>
+                <div><b style="color:#fbbf24;">06 d8</b> : MVI B, d8</div>
+                <div><b style="color:#fbbf24;">0E d8</b> : MVI C, d8</div>
+                <div><b style="color:#fbbf24;">16 d8</b> : MVI D, d8</div>
+                <div><b style="color:#fbbf24;">1E d8</b> : MVI E, d8</div>
+                <div><b style="color:#fbbf24;">26 d8</b> : MVI H, d8</div>
+                <div><b style="color:#fbbf24;">2E d8</b> : MVI L, d8</div>
+                <div><b style="color:#fbbf24;">36 d8</b> : MVI M, d8</div>
+                <div><b style="color:#38bdf8;">3A lo hi</b>: LDA addr</div>
+                <div><b style="color:#38bdf8;">32 lo hi</b>: STA addr</div>
+                <div><b style="color:#38bdf8;">21 lo hi</b>: LXI H,addr</div>
+                <div><b style="color:#38bdf8;">11 lo hi</b>: LXI D,addr</div>
+                <div><b style="color:#38bdf8;">01 lo hi</b>: LXI B,addr</div>
+                <div><b style="color:#38bdf8;">2A lo hi</b>: LHLD addr</div>
+                <div><b style="color:#38bdf8;">22 lo hi</b>: SHLD addr</div>
+                <div><b style="color:#34d399;">47</b> : MOV B, A</div>
+                <div><b style="color:#34d399;">4F</b> : MOV C, A</div>
+                <div><b style="color:#34d399;">57</b> : MOV D, A</div>
+                <div><b style="color:#34d399;">78</b> : MOV A, B</div>
+                <div><b style="color:#34d399;">79</b> : MOV A, C</div>
+                <div><b style="color:#34d399;">7E</b> : MOV A, M</div>
+                <div><b style="color:#34d399;">77</b> : MOV M, A</div>
+                <div><b style="color:#34d399;">1A</b> : LDAX D</div>
+                <div><b style="color:#34d399;">12</b> : STAX D</div>
+                <div><b style="color:#c084fc;">80</b> : ADD B</div>
+                <div><b style="color:#c084fc;">81</b> : ADD C</div>
+                <div><b style="color:#c084fc;">86</b> : ADD M</div>
+                <div><b style="color:#c084fc;">C6 d8</b> : ADI d8</div>
+                <div><b style="color:#c084fc;">90</b> : SUB B</div>
+                <div><b style="color:#c084fc;">96</b> : SUB M</div>
+                <div><b style="color:#c084fc;">D6 d8</b> : SUI d8</div>
+                <div><b style="color:#c084fc;">04 / 05</b>: INR/DCR B</div>
+                <div><b style="color:#c084fc;">0C / 0D</b>: INR/DCR C</div>
+                <div><b style="color:#c084fc;">3C / 3D</b>: INR/DCR A</div>
+                <div><b style="color:#c084fc;">23 / 2B</b>: INX/DCX H</div>
+                <div><b style="color:#c084fc;">13 / 1B</b>: INX/DCX D</div>
+                <div><b style="color:#c084fc;">19</b> : DAD D</div>
+                <div><b style="color:#c084fc;">27</b> : DAA</div>
+                <div><b style="color:#c084fc;">2F</b> : CMA</div>
+                <div><b style="color:#c084fc;">E6 d8</b> : ANI d8</div>
+                <div><b style="color:#c084fc;">B8 / BE</b>: CMP B / M</div>
+                <div><b style="color:#c084fc;">FE d8</b> : CPI d8</div>
+                <div><b style="color:#c084fc;">07 / 0F</b>: RLC / RRC</div>
+                <div><b style="color:#fb7185;">C3 lo hi</b>: JMP addr</div>
+                <div><b style="color:#fb7185;">C2 lo hi</b>: JNZ addr</div>
+                <div><b style="color:#fb7185;">CA lo hi</b>: JZ addr</div>
+                <div><b style="color:#fb7185;">D2 lo hi</b>: JNC addr</div>
+                <div><b style="color:#fb7185;">DA lo hi</b>: JC addr</div>
+                <div><b style="color:#fb7185;">EB</b> : XCHG</div>
+                <div><b style="color:#fb7185;">76</b> : HLT (Stop)</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class CPU8085 {
+            constructor() {
+                this.memory = new Uint8Array(65536);
+                this.parityTable = new Uint8Array(256);
+                for (let i = 0; i < 256; i++) {
+                    let b = 0;
+                    for (let j = 0; j < 8; j++) if ((i >> j) & 1) b++;
+                    this.parityTable[i] = (b % 2 === 0) ? 1 : 0;
+                }
+                this.resetRegisters();
+            }
+
+            resetRegisters() {
+                this.A = 0; this.B = 0; this.C = 0; this.D = 0;
+                this.E = 0; this.H = 0; this.L = 0;
+                this.PC = 0x8000;
+                this.SP = 0x27FF;
+                this.flags = { S: 0, Z: 0, AC: 0, P: 0, CY: 0 };
+                this.isHalted = false;
+                this.outPort = 0;
+            }
+
+            readByte(addr) { return this.memory[addr & 0xFFFF]; }
+            writeByte(addr, val) { this.memory[addr & 0xFFFF] = val & 0xFF; }
+            readWord(addr) { return (this.readByte(addr + 1) << 8) | this.readByte(addr); }
+            writeWord(addr, val) { this.writeByte(addr, val & 0xFF); this.writeByte(addr + 1, (val >> 8) & 0xFF); }
+
+            getBC() { return (this.B << 8) | this.C; }
+            setBC(v) { this.B = (v >> 8) & 0xFF; this.C = v & 0xFF; }
+            getDE() { return (this.D << 8) | this.E; }
+            setDE(v) { this.D = (v >> 8) & 0xFF; this.E = v & 0xFF; }
+            getHL() { return (this.H << 8) | this.L; }
+            setHL(v) { this.H = (v >> 8) & 0xFF; this.L = v & 0xFF; }
+            getM() { return this.readByte(this.getHL()); }
+            setM(v) { this.writeByte(this.getHL(), v); }
+
+            getFlagByte() {
+                return (this.flags.S << 7) | (this.flags.Z << 6) | (this.flags.AC << 4) | (this.flags.P << 2) | 2 | this.flags.CY;
+            }
+            setFlagByte(f) {
+                this.flags.S = (f >> 7) & 1;
+                this.flags.Z = (f >> 6) & 1;
+                this.flags.AC = (f >> 4) & 1;
+                this.flags.P = (f >> 2) & 1;
+                this.flags.CY = f & 1;
+            }
+
+            pushWord(v) {
+                this.SP = (this.SP - 1) & 0xFFFF; this.writeByte(this.SP, (v >> 8) & 0xFF);
+                this.SP = (this.SP - 1) & 0xFFFF; this.writeByte(this.SP, v & 0xFF);
+            }
+            popWord() {
+                const lo = this.readByte(this.SP); this.SP = (this.SP + 1) & 0xFFFF;
+                const hi = this.readByte(this.SP); this.SP = (this.SP + 1) & 0xFFFF;
+                return (hi << 8) | lo;
+            }
+
+            getReg(idx) { return [this.B, this.C, this.D, this.E, this.H, this.L, this.getM(), this.A][idx & 7]; }
+            setReg(idx, v) {
+                v &= 0xFF;
+                switch (idx & 7) {
+                    case 0: this.B = v; break; case 1: this.C = v; break;
+                    case 2: this.D = v; break; case 3: this.E = v; break;
+                    case 4: this.H = v; break; case 5: this.L = v; break;
+                    case 6: this.setM(v); break; case 7: this.A = v; break;
+                }
+            }
+
+            updateZSP(v) {
+                v &= 0xFF;
+                this.flags.Z = (v === 0) ? 1 : 0;
+                this.flags.S = (v & 0x80) ? 1 : 0;
+                this.flags.P = this.parityTable[v];
+            }
+
+            add8(a, b, cy = 0) {
+                const sum = a + b + cy;
+                const res = sum & 0xFF;
+                this.updateZSP(res);
+                this.flags.CY = (sum > 0xFF) ? 1 : 0;
+                this.flags.AC = (((a & 0x0F) + (b & 0x0F) + cy) > 0x0F) ? 1 : 0;
+                return res;
+            }
+
+            sub8(a, b, brw = 0) {
+                const diff = a - b - brw;
+                const res = diff & 0xFF;
+                this.updateZSP(res);
+                this.flags.CY = (diff < 0) ? 1 : 0;
+                this.flags.AC = (((a & 0x0F) + ((~b) & 0x0F) + (1 - brw)) > 0x0F) ? 1 : 0;
+                return res;
+            }
+
+            step() {
+                if (this.isHalted) return false;
+                const op = this.readByte(this.PC);
+                this.PC = (this.PC + 1) & 0xFFFF;
+
+                if (op === 0x00) { /* NOP */ }
+                else if (op === 0x76) { this.isHalted = true; }
+                else if (op >= 0x40 && op <= 0x7F) { this.setReg(op >> 3, this.getReg(op)); }
+                else if ((op & 0xC7) === 0x06) {
+                    const d8 = this.readByte(this.PC); this.PC = (this.PC + 1) & 0xFFFF;
+                    this.setReg(op >> 3, d8);
+                }
+                else if ((op & 0xCF) === 0x01) {
+                    const d16 = this.readWord(this.PC); this.PC = (this.PC + 2) & 0xFFFF;
+                    const rp = (op >> 4) & 3;
+                    if (rp === 0) this.setBC(d16);
+                    else if (rp === 1) this.setDE(d16);
+                    else if (rp === 2) this.setHL(d16);
+                    else this.SP = d16;
+                }
+                else if (op === 0x3A) { const a = this.readWord(this.PC); this.PC = (this.PC + 2) & 0xFFFF; this.A = this.readByte(a); }
+                else if (op === 0x32) { const a = this.readWord(this.PC); this.PC = (this.PC + 2) & 0xFFFF; this.writeByte(a, this.A); }
+                else if (op === 0x2A) { const a = this.readWord(this.PC); this.PC = (this.PC + 2) & 0xFFFF; this.L = this.readByte(a); this.H = this.readByte(a + 1); }
+                else if (op === 0x22) { const a = this.readWord(this.PC); this.PC = (this.PC + 2) & 0xFFFF; this.writeByte(a, this.L); this.writeByte(a + 1, this.H); }
+                else if (op === 0x0A) { this.A = this.readByte(this.getBC()); }
+                else if (op === 0x1A) { this.A = this.readByte(this.getDE()); }
+                else if (op === 0x02) { this.writeByte(this.getBC(), this.A); }
+                else if (op === 0x12) { this.writeByte(this.getDE(), this.A); }
+                else if (op === 0xEB) { const th = this.H, tl = this.L; this.H = this.D; this.L = this.E; this.D = th; this.E = tl; }
+                else if (op >= 0x80 && op <= 0x87) { this.A = this.add8(this.A, this.getReg(op), 0); }
+                else if (op >= 0x88 && op <= 0x8F) { this.A = this.add8(this.A, this.getReg(op), this.flags.CY); }
+                else if (op === 0xC6) { const d8 = this.readByte(this.PC); this.PC = (this.PC + 1) & 0xFFFF; this.A = this.add8(this.A, d8, 0); }
+                else if (op === 0xCE) { const d8 = this.readByte(this.PC); this.PC = (this.PC + 1) & 0xFFFF; this.A = this.add8(this.A, d8, this.flags.CY); }
+                else if (op >= 0x90 && op <= 0x97) { this.A = this.sub8(this.A, this.getReg(op), 0); }
+                else if (op >= 0x98 && op <= 0x9F) { this.A = this.sub8(this.A, this.getReg(op), this.flags.CY); }
+                else if (op === 0xD6) { const d8 = this.readByte(this.PC); this.PC = (this.PC + 1) & 0xFFFF; this.A = this.sub8(this.A, d8, 0); }
+                else if (op === 0xDE) { const d8 = this.readByte(this.PC); this.PC = (this.PC + 1) & 0xFFFF; this.A = this.sub8(this.A, d8, this.flags.CY); }
+                else if ((op & 0xC7) === 0x04) {
+                    const r = (op >> 3) & 7, v = this.getReg(r), res = (v + 1) & 0xFF;
+                    this.updateZSP(res); this.flags.AC = ((v & 0x0F) === 0x0F) ? 1 : 0; this.setReg(r, res);
+                }
+                else if ((op & 0xC7) === 0x05) {
+                    const r = (op >> 3) & 7, v = this.getReg(r), res = (v - 1) & 0xFF;
+                    this.updateZSP(res); this.flags.AC = ((v & 0x0F) === 0x00) ? 0 : 1; this.setReg(r, res);
+                }
+                else if ((op & 0xCF) === 0x03) {
+                    const rp = (op >> 4) & 3;
+                    if (rp === 0) this.setBC((this.getBC() + 1) & 0xFFFF);
+                    else if (rp === 1) this.setDE((this.getDE() + 1) & 0xFFFF);
+                    else if (rp === 2) this.setHL((this.getHL() + 1) & 0xFFFF);
+                    else this.SP = (this.SP + 1) & 0xFFFF;
+                }
+                else if ((op & 0xCF) === 0x0B) {
+                    const rp = (op >> 4) & 3;
+                    if (rp === 0) this.setBC((this.getBC() - 1) & 0xFFFF);
+                    else if (rp === 1) this.setDE((this.getDE() - 1) & 0xFFFF);
+                    else if (rp === 2) this.setHL((this.getHL() - 1) & 0xFFFF);
+                    else this.SP = (this.SP - 1) & 0xFFFF;
+                }
+                else if ((op & 0xCF) === 0x09) {
+                    const rp = (op >> 4) & 3;
+                    const v = [this.getBC(), this.getDE(), this.getHL(), this.SP][rp];
+                    const sum = this.getHL() + v;
+                    this.flags.CY = (sum > 0xFFFF) ? 1 : 0;
+                    this.setHL(sum & 0xFFFF);
+                }
+                else if (op === 0x27) {
+                    let adj = 0, ncy = this.flags.CY;
+                    if ((this.A & 0x0F) > 9 || this.flags.AC === 1) adj += 0x06;
+                    if ((this.A >> 4) > 9 || this.flags.CY === 1 || (this.A + adj) > 0x9F) { adj += 0x60; ncy = 1; }
+                    this.flags.AC = (((this.A & 0x0F) + (adj & 0x0F)) > 0x0F) ? 1 : 0;
+                    this.A = (this.A + adj) & 0xFF; this.flags.CY = ncy; this.updateZSP(this.A);
+                }
+                else if (op >= 0xA0 && op <= 0xA7) { this.A &= this.getReg(op); this.updateZSP(this.A); this.flags.CY = 0; this.flags.AC = 1; }
+                else if (op === 0xE6) { const d8 = this.readByte(this.PC); this.PC = (this.PC + 1) & 0xFFFF; this.A &= d8; this.updateZSP(this.A); this.flags.CY = 0; this.flags.AC = 1; }
+                else if (op >= 0xA8 && op <= 0xAF) { this.A ^= this.getReg(op); this.updateZSP(this.A); this.flags.CY = 0; this.flags.AC = 0; }
+                else if (op === 0xEE) { const d8 = this.readByte(this.PC); this.PC = (this.PC + 1) & 0xFFFF; this.A ^= d8; this.updateZSP(this.A); this.flags.CY = 0; this.flags.AC = 0; }
+                else if (op >= 0xB0 && op <= 0xB7) { this.A |= this.getReg(op); this.updateZSP(this.A); this.flags.CY = 0; this.flags.AC = 0; }
+                else if (op === 0xF6) { const d8 = this.readByte(this.PC); this.PC = (this.PC + 1) & 0xFFFF; this.A |= d8; this.updateZSP(this.A); this.flags.CY = 0; this.flags.AC = 0; }
+                else if (op >= 0xB8 && op <= 0xBF) { this.sub8(this.A, this.getReg(op), 0); }
+                else if (op === 0xFE) { const d8 = this.readByte(this.PC); this.PC = (this.PC + 1) & 0xFFFF; this.sub8(this.A, d8, 0); }
+                else if (op === 0x2F) { this.A = (~this.A) & 0xFF; }
+                else if (op === 0x3F) { this.flags.CY = this.flags.CY ? 0 : 1; }
+                else if (op === 0x37) { this.flags.CY = 1; }
+                else if (op === 0x07) { const b7 = (this.A >> 7) & 1; this.A = ((this.A << 1) | b7) & 0xFF; this.flags.CY = b7; }
+                else if (op === 0x0F) { const b0 = this.A & 1; this.A = ((this.A >> 1) | (b0 << 7)) & 0xFF; this.flags.CY = b0; }
+                else if (op === 0x17) { const cy = this.flags.CY, b7 = (this.A >> 7) & 1; this.A = ((this.A << 1) | cy) & 0xFF; this.flags.CY = b7; }
+                else if (op === 0x1F) { const cy = this.flags.CY, b0 = this.A & 1; this.A = ((this.A >> 1) | (cy << 7)) & 0xFF; this.flags.CY = b0; }
+                else if (op === 0xC3) { this.PC = this.readWord(this.PC); }
+                else if ([0xC2, 0xCA, 0xD2, 0xDA, 0xE2, 0xEA, 0xF2, 0xFA].includes(op)) {
+                    const target = this.readWord(this.PC); this.PC = (this.PC + 2) & 0xFFFF;
+                    const cond = {
+                        0xC2: this.flags.Z === 0, 0xCA: this.flags.Z === 1,
+                        0xD2: this.flags.CY === 0, 0xDA: this.flags.CY === 1,
+                        0xE2: this.flags.P === 0, 0xEA: this.flags.P === 1,
+                        0xF2: this.flags.S === 0, 0xFA: this.flags.S === 1
+                    }[op];
+                    if (cond) this.PC = target;
+                }
+                else if (op === 0xCD) {
+                    const target = this.readWord(this.PC); this.pushWord((this.PC + 2) & 0xFFFF); this.PC = target;
+                }
+                else if (op === 0xC9) { this.PC = this.popWord(); }
+                else if ([0xC5, 0xD5, 0xE5, 0xF5].includes(op)) {
+                    if (op === 0xC5) this.pushWord(this.getBC());
+                    else if (op === 0xD5) this.pushWord(this.getDE());
+                    else if (op === 0xE5) this.pushWord(this.getHL());
+                    else this.pushWord((this.A << 8) | this.getFlagByte());
+                }
+                else if ([0xC1, 0xD1, 0xE1, 0xF1].includes(op)) {
+                    const w = this.popWord();
+                    if (op === 0xC1) this.setBC(w);
+                    else if (op === 0xD1) this.setDE(w);
+                    else if (op === 0xE1) this.setHL(w);
+                    else { this.A = (w >> 8) & 0xFF; this.setFlagByte(w & 0xFF); }
+                }
+                else if (op === 0xE9) { this.PC = this.getHL(); }
+                else if (op === 0xF9) { this.SP = this.getHL(); }
+                else if (op === 0xD3) { const port = this.readByte(this.PC); this.PC = (this.PC + 1) & 0xFFFF; this.outPort = this.A; }
+                else if (op === 0xDB) { const port = this.readByte(this.PC); this.PC = (this.PC + 1) & 0xFFFF; }
+                else {
+                    this.isHalted = true;
+                }
+                return true;
+            }
+
+            runFrom(startAddr, maxSteps = 100000) {
+                this.PC = startAddr & 0xFFFF;
+                this.isHalted = false;
+                let steps = 0;
+                while (!this.isHalted && steps < maxSteps) {
+                    this.step();
+                    steps++;
+                }
+                return { steps, halted: this.isHalted };
+            }
+        }
+
+        const cpu = new CPU8085();
+        let soundOn = true;
+        let audioCtx = null;
+
+        function beep(freq = 850, dur = 0.03) {
+            if (!soundOn) return;
+            try {
+                const AC = window.AudioContext || window.webkitAudioContext;
+                if (!audioCtx && AC) audioCtx = new AC();
+                if (!audioCtx) return;
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.18, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + dur);
+            } catch (e) {}
+        }
+
+        // Microprocessor Kit States:
+        // 'STANDBY'         -> "-UP85  "
+        // 'SUB_PROMPT'      -> "Sub   "
+        // 'SUB_MODE_SELECT' -> "  nE  " (Memory) or " rEG  " (Register)
+        // 'SUB_ADDR_INPUT'  -> "----  " (Entering 4-digit address, e.g. 8000)
+        // 'SUB_DATA'        -> "8000.00" (Viewing / Modifying memory byte)
+        // 'EXE_PROMPT'      -> " E    "
+        // 'EXE_CONFIRM'     -> "  GO  "
+        // 'EXE_ADDR_INPUT'  -> "----  " (Entering 4-digit execute address)
+        // 'HALTED'          -> "E-HLt05" (Program finished, shows A register)
+        // 'REG_VIEW'        -> " r-A05" (Viewing / Modifying A, B, C, D, E, H, L, F, SP, PC)
+        // 'MOV_SRC'         -> Block move source start
+        // 'MOV_END'         -> Block move source end
+        // 'MOV_DST'         -> Block move destination
+
+        let state = 'STANDBY';
+        let subMode = 'MEM'; // 'MEM' or 'REG'
+        let curAddr = 0x8000;
+        let addrBuffer = '';
+        let dataBuffer = '';
+        let regIdx = 0;
+        let movSrc = 0x8050, movEnd = 0x8055, movDst = 0x8070;
+
+        const regDefs = [
+            { key: 'A', name: ' r-A', get: () => cpu.A, set: (v) => cpu.A = (v & 0xFF) },
+            { key: 'B', name: ' r-b', get: () => cpu.B, set: (v) => cpu.B = (v & 0xFF) },
+            { key: 'C', name: ' r-C', get: () => cpu.C, set: (v) => cpu.C = (v & 0xFF) },
+            { key: 'D', name: ' r-d', get: () => cpu.D, set: (v) => cpu.D = (v & 0xFF) },
+            { key: 'E', name: ' r-E', get: () => cpu.E, set: (v) => cpu.E = (v & 0xFF) },
+            { key: 'H', name: ' r-H', get: () => cpu.H, set: (v) => cpu.H = (v & 0xFF) },
+            { key: 'L', name: ' r-L', get: () => cpu.L, set: (v) => cpu.L = (v & 0xFF) },
+            { key: 'F', name: ' r-F', get: () => cpu.getFlagByte(), set: (v) => cpu.setFlagByte(v) },
+            { key: 'SPH', name: 'SP-H', get: () => (cpu.SP >> 8) & 0xFF, set: (v) => cpu.SP = ((v << 8) | (cpu.SP & 0xFF)) },
+            { key: 'SPL', name: 'SP-L', get: () => cpu.SP & 0xFF, set: (v) => cpu.SP = ((cpu.SP & 0xFF00) | (v & 0xFF)) },
+            { key: 'PCH', name: 'PC-H', get: () => (cpu.PC >> 8) & 0xFF, set: (v) => cpu.PC = ((v << 8) | (cpu.PC & 0xFF)) },
+            { key: 'PCL', name: 'PC-L', get: () => cpu.PC & 0xFF, set: (v) => cpu.PC = ((cpu.PC & 0xFF00) | (v & 0xFF)) }
+        ];
+
+        function hex2(v) { return (v & 0xFF).toString(16).toUpperCase().padStart(2, '0'); }
+        function hex4(v) { return (v & 0xFFFF).toString(16).toUpperCase().padStart(4, '0'); }
+
+        function setSevenSeg(chars6, activeDpIndex = -1) {
+            const str = chars6.padEnd(6, ' ').slice(0, 6);
+            for (let i = 0; i < 6; i++) {
+                document.getElementById('d' + i).textContent = str[i];
+                document.getElementById('dp' + i).classList.toggle('lit', i === activeDpIndex);
+            }
+        }
+
+        function setStatus(statusText, logText) {
+            document.getElementById('kitStatusLine').textContent = statusText;
+            if (logText) document.getElementById('lastActionLog').textContent = logText;
+        }
+
+        function refreshDisplay() {
+            if (state === 'STANDBY') {
+                setSevenSeg('-UP85 ', -1);
+                setStatus('STATE: MONITOR STANDBY (-UP85) — Ready for commands');
+            } else if (state === 'SUB_PROMPT') {
+                setSevenSeg('Sub   ', -1);
+                setStatus('STATE: SUBSTITUTE — PRESS [ENTER] TO SELECT MODE');
+            } else if (state === 'SUB_MODE_SELECT') {
+                if (subMode === 'MEM') {
+                    setSevenSeg('  nE  ', -1);
+                    setStatus('STATE: MODE [nE = MEMORY] — PRESS [ENTER] FOR ADDRESS OR ANY KEY FOR REGISTER (rEG)');
+                } else {
+                    setSevenSeg(' rEG  ', -1);
+                    setStatus('STATE: MODE [rEG = REGISTER] — PRESS [ENTER] TO EXAMINE REGISTERS');
+                }
+            } else if (state === 'SUB_ADDR_INPUT') {
+                const displayAddr = addrBuffer.length > 0 ? addrBuffer.padEnd(4, '-').slice(0, 4) : '----';
+                setSevenSeg(displayAddr + '  ', 3);
+                setStatus(`STATE: ENTER MEMORY ADDRESS — TYPED: [${displayAddr}]. PRESS [ENTER] WHEN READY`);
+            } else if (state === 'SUB_DATA') {
+                const val = cpu.readByte(curAddr);
+                const dataStr = dataBuffer.length === 1 ? (' ' + dataBuffer) : hex2(val);
+                setSevenSeg(hex4(curAddr) + dataStr, 3);
+                setStatus(`STATE: MEMORY [${hex4(curAddr)}H] = ${hex2(val)}H — TYPE HEX BYTE, [ENTER] FOR NEXT, [PREV] FOR BACK`);
+            } else if (state === 'EXE_PROMPT') {
+                setSevenSeg(' E    ', -1);
+                setStatus('STATE: EXECUTE (E) — PRESS [ENTER] TO CONTINUE');
+            } else if (state === 'EXE_CONFIRM') {
+                setSevenSeg('  GO  ', -1);
+                setStatus('STATE: EXECUTE (GO) — PRESS [ENTER] TO ENTER START ADDRESS');
+            } else if (state === 'EXE_ADDR_INPUT') {
+                const displayAddr = addrBuffer.length > 0 ? addrBuffer.padEnd(4, '-').slice(0, 4) : '----';
+                setSevenSeg(displayAddr + '  ', 3);
+                setStatus(`STATE: EXECUTE START ADDRESS — TYPED: [${displayAddr}]. PRESS [ENTER] OR [EXE] TO RUN`);
+            } else if (state === 'HALTED') {
+                setSevenSeg('E-HLt ' + hex2(cpu.A), 4);
+                setStatus(`STATE: PROGRAM HALTED (HLT AT ${hex4(cpu.PC - 1)}H) — ACCUMULATOR A = ${hex2(cpu.A)}H`);
+            } else if (state === 'REG_VIEW') {
+                const reg = regDefs[regIdx];
+                const rVal = reg.get();
+                const dataStr = dataBuffer.length === 1 ? (' ' + dataBuffer) : hex2(rVal);
+                setSevenSeg(reg.name + dataStr, 3);
+                setStatus(`STATE: REGISTER [${reg.name.trim()}] = ${hex2(rVal)}H — PRESS [ENTER] FOR NEXT REGISTER`);
+            } else if (state === 'MOV_SRC') {
+                setSevenSeg(hex4(movSrc) + 'S1', 3);
+                setStatus('STATE: BLOCK MOVE — ENTER START ADDRESS & PRESS [ENTER]');
+            } else if (state === 'MOV_END') {
+                setSevenSeg(hex4(movEnd) + 'S2', 3);
+                setStatus('STATE: BLOCK MOVE — ENTER END ADDRESS & PRESS [ENTER]');
+            } else if (state === 'MOV_DST') {
+                setSevenSeg(hex4(movDst) + 'dt', 3);
+                setStatus('STATE: BLOCK MOVE — ENTER DESTINATION ADDRESS & PRESS [ENTER]');
+            }
+
+            document.getElementById('regA').textContent = hex2(cpu.A);
+            document.getElementById('regB').textContent = hex2(cpu.B);
+            document.getElementById('regC').textContent = hex2(cpu.C);
+            document.getElementById('regD').textContent = hex2(cpu.D);
+            document.getElementById('regE').textContent = hex2(cpu.E);
+            document.getElementById('regH').textContent = hex2(cpu.H);
+            document.getElementById('regL').textContent = hex2(cpu.L);
+            document.getElementById('regM').textContent = hex2(cpu.getM());
+            document.getElementById('regPC').textContent = hex4(cpu.PC);
+            document.getElementById('regSP').textContent = hex4(cpu.SP);
+
+            ['S', 'Z', 'AC', 'P', 'CY'].forEach(f => {
+                const el = document.getElementById('flg' + f);
+                el.textContent = `${f}=${cpu.flags[f]}`;
+                el.classList.toggle('on', cpu.flags[f] === 1);
+            });
+
+            renderMemoryPeek();
+        }
+
+        function pressKey(key) {
+            beep(key === 'RST' || key === 'EXE' ? 1050 : 800, 0.035);
+
+            const btn = document.querySelector(`.trainer-key[data-key="${key}"]`);
+            if (btn) {
+                btn.classList.add('pressed');
+                setTimeout(() => btn.classList.remove('pressed'), 120);
+            }
+
+            const isHex = /^[0-9A-F]$/.test(key);
+
+            // HARDWARE RESET (RST)
+            if (key === 'RST') {
+                cpu.isHalted = false;
+                state = 'STANDBY';
+                subMode = 'MEM';
+                addrBuffer = '';
+                dataBuffer = '';
+                refreshDisplay();
+                setStatus('STATE: MONITOR STANDBY (-UP85)', 'System Reset to Monitor Standby (-UP85). RAM contents preserved.');
+                return;
+            }
+
+            // ESCAPE (ESC)
+            if (key === 'ESC') {
+                state = 'STANDBY';
+                addrBuffer = '';
+                dataBuffer = '';
+                refreshDisplay();
+                setStatus('STATE: MONITOR STANDBY (-UP85)', 'Escaped to Monitor Standby.');
+                return;
+            }
+
+            // SUB (SUBSTITUTE MEMORY / REGISTER)
+            if (key === 'SUB') {
+                state = 'SUB_PROMPT';
+                subMode = 'MEM';
+                addrBuffer = '';
+                dataBuffer = '';
+                refreshDisplay();
+                setStatus('STATE: SUBSTITUTE', 'SUB pressed. Press [ENTER] to choose Memory (nE) or Register (rEG).');
+                return;
+            }
+
+            // MODE TOGGLE IN SUB_MODE_SELECT
+            if (state === 'SUB_MODE_SELECT' && key === 'TOGGLE') {
+                subMode = (subMode === 'MEM') ? 'REG' : 'MEM';
+                refreshDisplay();
+                return;
+            }
+
+            // EXECUTE (EXE)
+            if (key === 'EXE') {
+                if (state === 'EXE_ADDR_INPUT' || state === 'SUB_ADDR_INPUT') {
+                    const startAddr = (addrBuffer.length > 0) ? (parseInt(addrBuffer, 16) & 0xFFFF) : curAddr;
+                    curAddr = startAddr;
+                    const res = cpu.runFrom(startAddr);
+                    state = 'HALTED';
+                    beep(1300, 0.09);
+                    refreshDisplay();
+                    setStatus(
+                        `STATE: EXECUTED FROM ${hex4(startAddr)}H (${res.steps} STEPS) → HALTED`,
+                        `Program executed from ${hex4(startAddr)}H (${res.steps} instructions). Halted! Press [SUB] → [ENTER] → [ENTER] to view memory result, or [SUB] → [ENTER] → [ANY KEY] → [ENTER] for registers.`
+                    );
+                } else if (state === 'SUB_DATA') {
+                    const res = cpu.runFrom(curAddr);
+                    state = 'HALTED';
+                    beep(1300, 0.09);
+                    refreshDisplay();
+                    setStatus(
+                        `STATE: EXECUTED FROM ${hex4(curAddr)}H (${res.steps} STEPS) → HALTED`,
+                        `Program executed from ${hex4(curAddr)}H. Halted! Accumulator A = ${hex2(cpu.A)}H.`
+                    );
+                } else {
+                    state = 'EXE_PROMPT';
+                    addrBuffer = '';
+                    refreshDisplay();
+                    setStatus('STATE: EXECUTE (E)', 'EXE pressed: Press [ENTER] → [ENTER] → Type start address.');
+                }
+                return;
+            }
+
+            // ENTER
+            if (key === 'ENTER') {
+                if (state === 'STANDBY' || state === 'HALTED') {
+                    state = 'SUB_PROMPT';
+                    subMode = 'MEM';
+                    addrBuffer = '';
+                    dataBuffer = '';
+                    refreshDisplay();
+                } else if (state === 'SUB_PROMPT') {
+                    state = 'SUB_MODE_SELECT';
+                    subMode = 'MEM';
+                    refreshDisplay();
+                    setStatus('STATE: MODE [nE]', 'Mode: Memory (nE). Press [ENTER] to enter address, or press ANY KEY for Register (rEG).');
+                } else if (state === 'SUB_MODE_SELECT') {
+                    if (subMode === 'MEM') {
+                        state = 'SUB_ADDR_INPUT';
+                        addrBuffer = '';
+                        refreshDisplay();
+                        setStatus('STATE: ENTER ADDRESS', 'Type 4-digit hex address (e.g. 8000), then press [ENTER].');
+                    } else {
+                        state = 'REG_VIEW';
+                        regIdx = 0;
+                        dataBuffer = '';
+                        refreshDisplay();
+                        setStatus(`STATE: REGISTER [A] = ${hex2(cpu.A)}H`, 'Press [ENTER] to cycle through B, C, D, E, H, L, F, SP, PC.');
+                    }
+                } else if (state === 'SUB_ADDR_INPUT') {
+                    curAddr = (addrBuffer.length > 0) ? (parseInt(addrBuffer, 16) & 0xFFFF) : 0x8000;
+                    state = 'SUB_DATA';
+                    dataBuffer = '';
+                    refreshDisplay();
+                    setStatus(`STATE: MEMORY [${hex4(curAddr)}H]`, `Address ${hex4(curAddr)}H opened. Type 2-digit hex byte or press [ENTER] to advance.`);
+                } else if (state === 'SUB_DATA') {
+                    if (dataBuffer.length > 0) {
+                        cpu.writeByte(curAddr, parseInt(dataBuffer, 16));
+                        dataBuffer = '';
+                    }
+                    curAddr = (curAddr + 1) & 0xFFFF;
+                    dataBuffer = '';
+                    refreshDisplay();
+                    setStatus(`STATE: MEMORY [${hex4(curAddr)}H]`, `Advanced to [${hex4(curAddr)}H] = ${hex2(cpu.readByte(curAddr))}H.`);
+                } else if (state === 'EXE_PROMPT') {
+                    state = 'EXE_CONFIRM';
+                    refreshDisplay();
+                    setStatus('STATE: EXECUTE (GO)', 'Press [ENTER] to enter 4-digit start address.');
+                } else if (state === 'EXE_CONFIRM') {
+                    state = 'EXE_ADDR_INPUT';
+                    addrBuffer = '';
+                    refreshDisplay();
+                    setStatus('STATE: EXECUTE ADDRESS', 'Type 4-digit start address (e.g. 8000), then press [ENTER] or [EXE] to run.');
+                } else if (state === 'EXE_ADDR_INPUT') {
+                    const startAddr = (addrBuffer.length > 0) ? (parseInt(addrBuffer, 16) & 0xFFFF) : curAddr;
+                    curAddr = startAddr;
+                    const res = cpu.runFrom(startAddr);
+                    state = 'HALTED';
+                    beep(1300, 0.09);
+                    refreshDisplay();
+                    setStatus(
+                        `STATE: EXECUTED FROM ${hex4(startAddr)}H (${res.steps} STEPS) → HALTED`,
+                        `Program executed from ${hex4(startAddr)}H (${res.steps} instructions). Halted! Press [SUB] → [ENTER] → [ENTER] to check memory result.`
+                    );
+                } else if (state === 'REG_VIEW') {
+                    if (dataBuffer.length > 0) {
+                        regDefs[regIdx].set(parseInt(dataBuffer, 16));
+                        dataBuffer = '';
+                    }
+                    regIdx = (regIdx + 1) % regDefs.length;
+                    dataBuffer = '';
+                    refreshDisplay();
+                } else if (state === 'MOV_SRC') {
+                    state = 'MOV_END';
+                    addrBuffer = '';
+                    refreshDisplay();
+                } else if (state === 'MOV_END') {
+                    state = 'MOV_DST';
+                    addrBuffer = '';
+                    refreshDisplay();
+                } else if (state === 'MOV_DST') {
+                    let s = movSrc, d = movDst;
+                    while (s <= movEnd) {
+                        cpu.writeByte(d, cpu.readByte(s));
+                        s++; d++;
+                    }
+                    state = 'STANDBY';
+                    refreshDisplay();
+                    setStatus('STATE: BLOCK MOVE COMPLETE', `Copied memory block ${hex4(movSrc)}H..${hex4(movEnd)}H to ${hex4(movDst)}H.`);
+                }
+                return;
+            }
+
+            // PREV (STEP BACKWARD)
+            if (key === 'PREV') {
+                if (state === 'SUB_DATA') {
+                    if (dataBuffer.length > 0) {
+                        cpu.writeByte(curAddr, parseInt(dataBuffer, 16));
+                        dataBuffer = '';
+                    }
+                    curAddr = (curAddr - 1 + 0x10000) & 0xFFFF;
+                    dataBuffer = '';
+                    refreshDisplay();
+                    setStatus(`STATE: MEMORY [${hex4(curAddr)}H]`, `Moved back to [${hex4(curAddr)}H] = ${hex2(cpu.readByte(curAddr))}H.`);
+                } else if (state === 'SUB_ADDR_INPUT' || state === 'EXE_ADDR_INPUT') {
+                    if (addrBuffer.length > 0) {
+                        addrBuffer = addrBuffer.slice(0, -1);
+                        refreshDisplay();
+                    }
+                } else if (state === 'REG_VIEW') {
+                    if (dataBuffer.length > 0) {
+                        regDefs[regIdx].set(parseInt(dataBuffer, 16));
+                        dataBuffer = '';
+                    }
+                    regIdx = (regIdx - 1 + regDefs.length) % regDefs.length;
+                    dataBuffer = '';
+                    refreshDisplay();
+                }
+                return;
+            }
+
+            // USER (REGISTER INSPECT SHORTCUT)
+            if (key === 'USER1' || key === 'USER2') {
+                if (state === 'REG_VIEW') {
+                    regIdx = (regIdx + 1) % regDefs.length;
+                } else {
+                    state = 'REG_VIEW';
+                    regIdx = 0;
+                }
+                dataBuffer = '';
+                refreshDisplay();
+                return;
+            }
+
+            // SI/P (SINGLE STEP)
+            if (key === 'SI/P') {
+                if (state === 'SUB_ADDR_INPUT' || state === 'EXE_ADDR_INPUT') {
+                    cpu.PC = (addrBuffer.length > 0) ? (parseInt(addrBuffer, 16) & 0xFFFF) : curAddr;
+                } else if (state === 'SUB_DATA') {
+                    cpu.PC = curAddr;
+                }
+                cpu.isHalted = false;
+                const pcBefore = cpu.PC;
+                const op = cpu.readByte(pcBefore);
+                cpu.step();
+                curAddr = cpu.PC;
+                state = 'SUB_DATA';
+                dataBuffer = '';
+                refreshDisplay();
+                setStatus(
+                    `STATE: SINGLE STEP — EXECUTED [${hex4(pcBefore)}H: ${hex2(op)}H] → NEXT PC = ${hex4(cpu.PC)}H`,
+                    `Single-stepped instruction ${hex2(op)}H at ${hex4(pcBefore)}H. Next PC = ${hex4(cpu.PC)}H, A = ${hex2(cpu.A)}H.`
+                );
+                return;
+            }
+
+            // COMP (COMPLEMENT ACCUMULATOR)
+            if (key === 'COMP') {
+                cpu.A = (~cpu.A) & 0xFF;
+                refreshDisplay();
+                setStatus(`STATE: COMPLEMENT ACCUMULATOR → A = ${hex2(cpu.A)}H`, `Complemented Accumulator A → ${hex2(cpu.A)}H`);
+                return;
+            }
+
+            // MOV (BLOCK MOVE)
+            if (key === 'MOV') {
+                state = 'MOV_SRC';
+                addrBuffer = '';
+                refreshDisplay();
+                setStatus('STATE: BLOCK MOVE (START ADDR)', 'Block Move: Type Source Start Address and press [ENTER].');
+                return;
+            }
+
+            // SO/P (SERIAL OUTPUT PORT)
+            if (key === 'SO/P') {
+                setSevenSeg('POrt' + hex2(cpu.outPort), -1);
+                setStatus(`STATE: OUTPUT PORT LATCH = ${hex2(cpu.outPort)}H`, `Output Port displays ${hex2(cpu.outPort)}H.`);
+                return;
+            }
+
+            // SPECIAL HANDLING IN SUB_MODE_SELECT
+            // Any key pressed in SUB_MODE_SELECT (other than ENTER/ESC/RST) toggles between MEMORY and REGISTER!
+            if (state === 'SUB_MODE_SELECT') {
+                subMode = (subMode === 'MEM') ? 'REG' : 'MEM';
+                refreshDisplay();
+                return;
+            }
+
+            // HEX KEYS (0 - 9, A - F)
+            if (isHex) {
+                if (state === 'STANDBY' || state === 'HALTED') {
+                    state = 'SUB_ADDR_INPUT';
+                    addrBuffer = key;
+                    refreshDisplay();
+                } else if (state === 'SUB_PROMPT') {
+                    state = 'SUB_ADDR_INPUT';
+                    addrBuffer = key;
+                    refreshDisplay();
+                } else if (state === 'EXE_PROMPT' || state === 'EXE_CONFIRM') {
+                    state = 'EXE_ADDR_INPUT';
+                    addrBuffer = key;
+                    refreshDisplay();
+                } else if (state === 'SUB_ADDR_INPUT' || state === 'EXE_ADDR_INPUT') {
+                    if (addrBuffer.length < 4) {
+                        addrBuffer += key;
+                    } else {
+                        addrBuffer = addrBuffer.slice(1) + key;
+                    }
+                    refreshDisplay();
+                } else if (state === 'SUB_DATA') {
+                    dataBuffer += key;
+                    if (dataBuffer.length >= 2) {
+                        const val = parseInt(dataBuffer.slice(0, 2), 16);
+                        cpu.writeByte(curAddr, val);
+                        dataBuffer = '';
+                        refreshDisplay();
+                        setStatus(`STATE: WROTE ${hex2(val)}H TO [${hex4(curAddr)}H]`, `Saved ${hex2(val)}H at [${hex4(curAddr)}H]. Press [ENTER] for next address.`);
+                    } else {
+                        refreshDisplay();
+                    }
+                } else if (state === 'REG_VIEW') {
+                    const directReg = regDefs.findIndex(r => r.key === key);
+                    if (directReg >= 0 && dataBuffer.length === 0) {
+                        regIdx = directReg;
+                        refreshDisplay();
+                    } else {
+                        dataBuffer += key;
+                        if (dataBuffer.length >= 2) {
+                            const val = parseInt(dataBuffer.slice(0, 2), 16);
+                            regDefs[regIdx].set(val);
+                            dataBuffer = '';
+                            refreshDisplay();
+                            setStatus(`STATE: SET REGISTER [${regDefs[regIdx].name.trim()}] = ${hex2(val)}H`, `Register updated to ${hex2(val)}H.`);
+                        } else {
+                            refreshDisplay();
+                        }
+                    }
+                } else if (state === 'MOV_SRC') {
+                    movSrc = ((movSrc << 4) | parseInt(key, 16)) & 0xFFFF;
+                    refreshDisplay();
+                } else if (state === 'MOV_END') {
+                    movEnd = ((movEnd << 4) | parseInt(key, 16)) & 0xFFFF;
+                    refreshDisplay();
+                } else if (state === 'MOV_DST') {
+                    movDst = ((movDst << 4) | parseInt(key, 16)) & 0xFFFF;
+                    refreshDisplay();
+                }
+            }
+        }
+
+        document.querySelectorAll('.trainer-key').forEach(btn => {
+            btn.addEventListener('click', () => pressKey(btn.dataset.key));
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (document.activeElement && document.activeElement.tagName === 'INPUT') return;
+
+            const k = e.key.toUpperCase();
+
+            // When in SUB_MODE_SELECT, pressing any key other than Enter, Escape, or R toggles mode!
+            if (state === 'SUB_MODE_SELECT' && e.key !== 'Enter' && e.key !== 'Escape' && k !== 'R') {
+                e.preventDefault();
+                pressKey('TOGGLE');
+                return;
+            }
+
+            if (/^[0-9A-F]$/.test(k)) {
+                e.preventDefault();
+                pressKey(k);
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                pressKey('ENTER');
+            } else if (e.key === 'Backspace' || e.key === '-' || e.key === 'ArrowUp') {
+                e.preventDefault();
+                pressKey('PREV');
+            } else if (e.key === 'ArrowDown' || e.key === '+') {
+                e.preventDefault();
+                pressKey('ENTER');
+            } else if (e.key === 'Escape') {
+                e.preventDefault();
+                pressKey('ESC');
+            } else if (k === 'R') {
+                e.preventDefault();
+                pressKey('RST');
+            } else if (k === 'S') {
+                e.preventDefault();
+                pressKey('SUB');
+            } else if (k === 'X' || k === 'G') {
+                e.preventDefault();
+                pressKey('EXE');
+            } else if (k === 'I' || e.key === ' ') {
+                e.preventDefault();
+                pressKey('SI/P');
+            } else if (k === 'U') {
+                e.preventDefault();
+                pressKey('USER1');
+            } else if (k === 'M') {
+                e.preventDefault();
+                pressKey('MOV');
+            }
+        });
+
+        document.getElementById('btnAudioToggle').addEventListener('click', (e) => {
+            soundOn = !soundOn;
+            e.target.textContent = soundOn ? '🔊 Beep ON' : '🔇 Beep OFF';
+        });
+
+        document.getElementById('btnToggleMemPeek').addEventListener('click', () => {
+            const d = document.getElementById('memPeekDrawer');
+            d.classList.toggle('hidden');
+            renderMemoryPeek();
+        });
+
+        document.getElementById('btnToggleOpcodeSheet').addEventListener('click', () => {
+            document.getElementById('opcodeSheetDrawer').classList.toggle('hidden');
+        });
+
+        document.getElementById('btnClearRam').addEventListener('click', () => {
+            cpu.memory.fill(0);
+            cpu.resetRegisters();
+            state = 'STANDBY';
+            refreshDisplay();
+            setStatus('STATE: RAM CLEARED TO 00H', 'All 64KB memory cleared to 00H and CPU registers reset.');
+        });
+
+        document.getElementById('inpMemBase').addEventListener('input', renderMemoryPeek);
+
+        function renderMemoryPeek() {
+            const drawer = document.getElementById('memPeekDrawer');
+            if (drawer.classList.contains('hidden')) return;
+            const grid = document.getElementById('memDumpGrid');
+            const baseInput = parseInt(document.getElementById('inpMemBase').value, 16);
+            const base = isNaN(baseInput) ? (curAddr & 0xFFE0) : (baseInput & 0xFFF0);
+            let html = '';
+            for (let i = 0; i < 32; i++) {
+                const a = (base + i) & 0xFFFF;
+                const v = cpu.readByte(a);
+                const isCur = (a === curAddr);
+                const style = isCur
+                    ? 'background:#064e3b; border:1px solid #10b981; color:#6ee7b7; font-weight:700;'
+                    : (v !== 0 ? 'background:#0f172a; border:1px solid #b45309; color:#fcd34d;' : 'background:#0f172a; border:1px solid #1e293b; color:#64748b;');
+                html += `<div style="padding:4px 8px; border-radius:4px; ${style}">
+                    ${hex4(a)}: <b style="${v !== 0 ? 'color:#fff;' : ''}">${hex2(v)}</b>
+                </div>`;
+            }
+            grid.innerHTML = html;
+        }
+
+        refreshDisplay();
+    </script>
+</body>
+</html>

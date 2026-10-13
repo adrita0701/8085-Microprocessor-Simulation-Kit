@@ -1,0 +1,1522 @@
+/* ==========================================================================
+   8085 Microprocessor Trainer Kit Simulator - Retro Hardware Styling
+   ========================================================================== */
+
+:root {
+    --pcb-dark: #0a2414;
+    --pcb-green: #0f3d22;
+    --pcb-light: #185c34;
+    --pcb-trace: rgba(64, 180, 100, 0.12);
+    --gold: #c5a059;
+    --gold-bright: #e5c158;
+    --silkscreen: #e8f5e9;
+    --led-red: #ff2a2a;
+    --led-red-dim: rgba(255, 42, 42, 0.15);
+    --led-red-glow: 0 0 10px rgba(255, 42, 42, 0.8), 0 0 20px rgba(255, 42, 42, 0.4);
+    --led-green: #00ff66;
+    --led-green-glow: 0 0 8px rgba(0, 255, 102, 0.8);
+    --led-amber: #ffaa00;
+    --led-amber-glow: 0 0 8px rgba(255, 170, 0, 0.8);
+    --ic-body: #1c1f24;
+    --ic-pin: #d0d5dd;
+    --key-red: #d93829;
+    --key-red-border: #992318;
+    --key-orange: #e0601e;
+    --key-orange-border: #a84210;
+    --key-gray: #2c333a;
+    --key-gray-border: #1a1e22;
+    --key-blue: #1b6ca8;
+    --key-blue-border: #104268;
+    --bg-dark: #0f1419;
+    --panel-bg: #141b22;
+    --border-color: #263342;
+    --text-main: #f0f6fc;
+    --text-muted: #8b949e;
+    --accent: #2ea043;
+    --font-mono: "Consolas", "Courier New", "Lucida Console", monospace;
+    --font-display: "Courier New", monospace;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Header bar */
+.app-header {
+    background: linear-gradient(180deg, #161f28 0%, #0d1217 100%);
+    border-bottom: 2px solid #23303e;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+.brand-section {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.brand-badge {
+    background: #c5a059;
+    color: #0a2414;
+    font-weight: 900;
+    font-size: 13px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    letter-spacing: 1px;
+    border: 1px solid #ffe28a;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.brand-title {
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.brand-subtitle {
+    font-size: 12px;
+    color: #8b949e;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+/* Nav Tabs */
+.nav-tabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.nav-tab-btn {
+    background: #1b242d;
+    color: #9da7b3;
+    border: 1px solid #2a3746;
+    padding: 7px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.nav-tab-btn:hover {
+    background: #253342;
+    color: #ffffff;
+    border-color: #3e5066;
+}
+
+.nav-tab-btn.active {
+    background: #238636;
+    color: #ffffff;
+    border-color: #2ea043;
+    box-shadow: 0 0 10px rgba(46, 160, 67, 0.4);
+}
+
+.header-tools {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sound-toggle-btn {
+    background: #1c2732;
+    border: 1px solid #334455;
+    color: #9cb0c6;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.sound-toggle-btn.active {
+    color: #58a6ff;
+    border-color: #388bfd;
+}
+
+/* Main Container */
+.main-wrapper {
+    max-width: 1540px;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+    animation: fadeIn 0.2s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   TRAINER KIT PCB BOARD
+   ========================================================================== */
+.pcb-board {
+    background: radial-gradient(circle at 50% 30%, #114728 0%, #0a2916 65%, #061c0e 100%);
+    border: 8px solid #06170d;
+    border-radius: 16px;
+    box-shadow: 0 12px 36px rgba(0,0,0,0.8), inset 0 0 40px rgba(0,0,0,0.6);
+    position: relative;
+    padding: 24px;
+    color: var(--silkscreen);
+    overflow: hidden;
+}
+
+/* PCB Background Traces and Gold Screws */
+.pcb-board::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: 
+        radial-gradient(circle, rgba(197, 160, 89, 0.12) 1px, transparent 1px),
+        linear-gradient(to right, var(--pcb-trace) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--pcb-trace) 1px, transparent 1px);
+    background-size: 24px 24px, 48px 48px, 48px 48px;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.screw-corner {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: radial-gradient(circle, #e5c158 35%, #8c6e2d 70%, #3a2e12 100%);
+    border-radius: 50%;
+    border: 2px solid #231c07;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.7), inset 0 1px 2px rgba(255,255,255,0.4);
+    z-index: 5;
+}
+.screw-tl { top: 12px; left: 12px; }
+.screw-tr { top: 12px; right: 12px; }
+.screw-bl { bottom: 12px; left: 12px; }
+.screw-br { bottom: 12px; right: 12px; }
+
+/* PCB Silkscreen Top Banner */
+.pcb-silkscreen-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px dashed rgba(232, 245, 233, 0.4);
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.silkscreen-brand h1 {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+    color: #e8f5e9;
+    text-transform: uppercase;
+}
+
+.silkscreen-brand p {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    color: #a3d9b1;
+    font-weight: 600;
+}
+
+.pcb-model-info {
+    text-align: right;
+    font-size: 11px;
+    font-family: var(--font-mono);
+    color: #c5a059;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+/* TOP DISPLAY SECTION (LED DISPLAY & HARDWARE STATUS) */
+.pcb-display-section {
+    background: #090d10;
+    border: 4px solid #1a232c;
+    border-radius: 12px;
+    padding: 16px 20px;
+    box-shadow: inset 0 6px 16px rgba(0,0,0,0.9), 0 4px 12px rgba(0,0,0,0.6);
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+/* 7-Segment Bezel & Display */
+.seven-seg-housing {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: #050608;
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: 2px solid #232c35;
+    box-shadow: inset 0 2px 10px rgba(0,0,0,0.95);
+}
+
+.display-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.display-group-label {
+    font-size: 10px;
+    color: #ff8888;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+}
+
+.seven-seg-glass {
+    background: #1f0505;
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: 1px solid #450c0c;
+    box-shadow: inset 0 0 12px rgba(0,0,0,0.9);
+    position: relative;
+}
+
+.seven-seg-glass::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 50%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, transparent 100%);
+    pointer-events: none;
+    border-radius: 5px 5px 0 0;
+}
+
+.seven-seg-text {
+    font-family: var(--font-mono);
+    font-size: 40px;
+    font-weight: 900;
+    color: var(--led-red);
+    text-shadow: var(--led-red-glow);
+    letter-spacing: 6px;
+    line-height: 1;
+    min-width: 140px;
+    text-align: center;
+}
+
+.seven-seg-text.data-digits {
+    min-width: 76px;
+}
+
+/* Status LEDs Panel */
+.status-leds-panel {
+    display: flex;
+    gap: 16px;
+    background: #0f151c;
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 1px solid #212c38;
+}
+
+.led-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.led-indicator span {
+    font-size: 10px;
+    font-weight: 800;
+    color: #8c9ba8;
+    letter-spacing: 1px;
+}
+
+.led-bulb {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #2b1212;
+    border: 1px solid #4a1c1c;
+    transition: all 0.15s ease;
+}
+
+.led-bulb.red.on {
+    background: #ff2a2a;
+    box-shadow: var(--led-red-glow);
+    border-color: #ffa3a3;
+}
+
+.led-bulb.green.on {
+    background: var(--led-green);
+    box-shadow: var(--led-green-glow);
+    border-color: #a8ffcc;
+}
+
+.led-bulb.amber.on {
+    background: var(--led-amber);
+    box-shadow: var(--led-amber-glow);
+    border-color: #ffe6a8;
+}
+
+/* Quick Display Actions */
+.display-quick-controls {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.btn-trainer-quick {
+    background: #1e2936;
+    border: 1px solid #36485c;
+    color: #e0e8f0;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.1s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-trainer-quick:hover {
+    background: #2a3a4c;
+    border-color: #4b6480;
+    transform: translateY(-1px);
+}
+
+.btn-trainer-quick:active {
+    transform: translateY(1px);
+}
+
+.btn-trainer-quick.step-btn {
+    background: #943210;
+    border-color: #bf451b;
+    color: #fff;
+    box-shadow: 0 3px 8px rgba(191, 69, 27, 0.4);
+}
+
+.btn-trainer-quick.step-btn:hover {
+    background: #b83d12;
+}
+
+.btn-trainer-quick.run-btn {
+    background: #1c6d2c;
+    border-color: #2ea043;
+    color: #fff;
+    box-shadow: 0 3px 8px rgba(46, 160, 67, 0.4);
+}
+
+.btn-trainer-quick.run-btn:hover {
+    background: #248737;
+}
+
+.btn-trainer-quick.reset-btn {
+    background: #7a1d1d;
+    border-color: #a62a2a;
+    color: #fff;
+}
+
+.btn-trainer-quick.reset-btn:hover {
+    background: #992424;
+}
+
+/* ==========================================================================
+   TRAINER KIT MIDDLE / LOWER GRID LAYOUT
+   ========================================================================== */
+.trainer-grid {
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 24px;
+    position: relative;
+    z-index: 2;
+}
+
+@media (max-width: 1080px) {
+    .trainer-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* LEFT AREA: CPU Registers, Flags, Explanation & IC Chips */
+.cpu-main-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Step Explanation Callout */
+.step-explanation-box {
+    background: #0d1721;
+    border: 2px solid #233547;
+    border-radius: 10px;
+    padding: 14px 18px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+.step-explanation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #1c2a38;
+    padding-bottom: 8px;
+    margin-bottom: 10px;
+}
+
+.step-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #58a6ff;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.step-status-tag {
+    font-size: 11px;
+    font-family: var(--font-mono);
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: #1b2633;
+    color: #8b949e;
+}
+
+.step-details-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 10px 16px;
+    font-size: 13px;
+    align-items: baseline;
+}
+
+.step-detail-label {
+    color: #8b949e;
+    font-weight: 600;
+}
+
+.step-instruction-name {
+    font-family: var(--font-mono);
+    font-weight: 800;
+    color: #f0883e;
+    font-size: 15px;
+}
+
+.step-desc-text {
+    color: #e6edf3;
+}
+
+.step-changes-text {
+    font-family: var(--font-mono);
+    color: #7ee787;
+    font-weight: 600;
+    background: #142218;
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+/* CPU REGISTERS & FLAGS CARD */
+.registers-card {
+    background: rgba(10, 20, 15, 0.85);
+    border: 2px solid rgba(80, 200, 120, 0.4);
+    border-radius: 10px;
+    padding: 18px;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.7), 0 4px 12px rgba(0,0,0,0.4);
+}
+
+.card-title {
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    color: #a3e6b4;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Registers Grid */
+.registers-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.reg-box {
+    background: #080f0a;
+    border: 1px solid #1c3624;
+    border-radius: 6px;
+    padding: 8px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.reg-box.changed {
+    border-color: #e5c158;
+    background: #1a1e0b;
+    box-shadow: 0 0 8px rgba(229, 193, 88, 0.3);
+}
+
+.reg-name {
+    font-size: 13px;
+    font-weight: 800;
+    color: #7ee787;
+    font-family: var(--font-mono);
+}
+
+.reg-val {
+    font-size: 16px;
+    font-weight: 900;
+    font-family: var(--font-mono);
+    color: #ffffff;
+    letter-spacing: 1px;
+}
+
+/* Special 16-bit Registers (PC, SP, HL pair) */
+.special-regs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.special-reg-box {
+    background: #091217;
+    border: 1px solid #203546;
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.special-reg-box.changed {
+    border-color: #58a6ff;
+    background: #0c1c28;
+    box-shadow: 0 0 8px rgba(88, 166, 255, 0.3);
+}
+
+.special-reg-name {
+    font-size: 13px;
+    font-weight: 800;
+    color: #58a6ff;
+    font-family: var(--font-mono);
+}
+
+.special-reg-val {
+    font-size: 16px;
+    font-weight: 900;
+    font-family: var(--font-mono);
+    color: #ffffff;
+    letter-spacing: 1px;
+}
+
+/* Flags Row */
+.flags-wrapper {
+    background: #070e14;
+    border: 1px solid #1b2e3e;
+    border-radius: 8px;
+    padding: 12px 16px;
+}
+
+.flags-title {
+    font-size: 11px;
+    color: #8b949e;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.flags-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+}
+
+.flag-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #111a22;
+    border: 1px solid #233446;
+    border-radius: 6px;
+    padding: 6px;
+    transition: all 0.2s ease;
+}
+
+.flag-box.active {
+    border-color: #ff5555;
+    background: #2a1215;
+    box-shadow: 0 0 8px rgba(255, 85, 85, 0.3);
+}
+
+.flag-tag {
+    font-size: 11px;
+    font-weight: 800;
+    color: #8b949e;
+}
+
+.flag-box.active .flag-tag {
+    color: #ff8888;
+}
+
+.flag-val {
+    font-size: 15px;
+    font-weight: 900;
+    font-family: var(--font-mono);
+    color: #6e7681;
+}
+
+.flag-box.active .flag-val {
+    color: #ff5555;
+}
+
+/* IC CHIP VISUAL COMPONENTS (HARDWARE AESTHETICS) */
+.ic-chip-row {
+    display: flex;
+    gap: 16px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 6px;
+}
+
+.ic-chip {
+    background: var(--ic-body);
+    border: 2px solid #30363d;
+    border-radius: 4px;
+    padding: 10px 16px;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.8), inset 0 1px 1px rgba(255,255,255,0.1);
+    flex: 1;
+    min-width: 140px;
+}
+
+.ic-notch {
+    position: absolute;
+    top: 50%;
+    left: -4px;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 12px;
+    background: #092815;
+    border-radius: 0 6px 6px 0;
+    border: 1px solid #30363d;
+}
+
+.ic-label-main {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 900;
+    color: #c9d1d9;
+    letter-spacing: 1px;
+}
+
+.ic-label-sub {
+    font-size: 9px;
+    color: #8b949e;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* ==========================================================================
+   RIGHT AREA: VIRTUAL KEYPAD MATRIX
+   ========================================================================== */
+.trainer-keypad-card {
+    background: #080d12;
+    border: 3px solid #1e2832;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.9), 0 6px 18px rgba(0,0,0,0.6);
+}
+
+.keypad-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #1c2734;
+    padding-bottom: 10px;
+}
+
+.keypad-title {
+    font-size: 14px;
+    font-weight: 800;
+    color: #e5c158;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.keypad-mode-badge {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 800;
+    background: #192634;
+    color: #58a6ff;
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 1px solid #283d54;
+}
+
+/* Keypad Function Keys Row */
+.fn-keys-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+/* Hex Keys Grid (4x4) */
+.hex-keys-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+/* Bottom Control Keys Row */
+.control-keys-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+/* Tactile Button Styling */
+.key-btn {
+    appearance: none;
+    border: none;
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-weight: 900;
+    cursor: pointer;
+    position: relative;
+    user-select: none;
+    transition: transform 0.05s ease, filter 0.1s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 6px;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.7), 0 5px 6px rgba(0,0,0,0.5);
+}
+
+.key-btn:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 rgba(0,0,0,0.7), 0 2px 3px rgba(0,0,0,0.5);
+}
+
+.key-btn .key-main-text {
+    font-size: 17px;
+    line-height: 1.1;
+}
+
+.key-btn .key-sub-text {
+    font-size: 8px;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+}
+
+/* Key Color Variants */
+.key-btn.key-red {
+    background: linear-gradient(180deg, #e54d3d 0%, #b82a1b 100%);
+    border-bottom: 3px solid var(--key-red-border);
+    color: #ffffff;
+}
+
+.key-btn.key-orange {
+    background: linear-gradient(180deg, #f07430 0%, #bd4c11 100%);
+    border-bottom: 3px solid var(--key-orange-border);
+    color: #ffffff;
+}
+
+.key-btn.key-hex {
+    background: linear-gradient(180deg, #37424d 0%, #20272e 100%);
+    border-bottom: 3px solid #14191e;
+    color: #f0f6fc;
+}
+
+.key-btn.key-hex:hover {
+    background: linear-gradient(180deg, #44515e 0%, #28313a 100%);
+}
+
+.key-btn.key-blue {
+    background: linear-gradient(180deg, #268bd2 0%, #175e92 100%);
+    border-bottom: 3px solid var(--key-blue-border);
+    color: #ffffff;
+}
+
+.key-btn.key-green {
+    background: linear-gradient(180deg, #2ea043 0%, #1e6d2c 100%);
+    border-bottom: 3px solid #13461c;
+    color: #ffffff;
+}
+
+/* Keypad Usage Guide */
+.keypad-guide {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid #1c2734;
+    font-size: 11px;
+    color: #8b949e;
+    line-height: 1.4;
+}
+
+.keypad-guide b {
+    color: #e5c158;
+}
+
+/* ==========================================================================
+   ASSEMBLY & MACHINE CODE TAB
+   ========================================================================== */
+.editor-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+@media (max-width: 990px) {
+    .editor-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+.editor-card {
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.editor-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.editor-toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.input-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.hex-input {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    color: #58a6ff;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 700;
+    padding: 6px 10px;
+    border-radius: 6px;
+    width: 100px;
+    text-transform: uppercase;
+}
+
+.source-textarea {
+    width: 100%;
+    height: 380px;
+    background: #0a0e14;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    color: #f0f6fc;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 12px;
+    resize: vertical;
+    tab-size: 4;
+    white-space: pre;
+}
+
+.source-textarea:focus {
+    outline: none;
+    border-color: #58a6ff;
+    box-shadow: 0 0 8px rgba(88, 166, 255, 0.3);
+}
+
+.editor-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.btn-primary {
+    background: #238636;
+    border: 1px solid #2ea043;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-primary:hover {
+    background: #2ea043;
+}
+
+.btn-secondary {
+    background: #21262d;
+    border: 1px solid #363b42;
+    color: #c9d1d9;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.btn-secondary:hover {
+    background: #30363d;
+    color: #fff;
+}
+
+/* Machine Code Table */
+.machine-code-container {
+    height: 380px;
+    overflow-y: auto;
+    background: #090d12;
+    border: 1px solid #21262d;
+    border-radius: 8px;
+}
+
+.machine-code-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-mono);
+    font-size: 13px;
+}
+
+.machine-code-table th {
+    background: #161b22;
+    color: #8b949e;
+    text-align: left;
+    padding: 8px 12px;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    position: sticky;
+    top: 0;
+    border-bottom: 1px solid #30363d;
+}
+
+.machine-code-table td {
+    padding: 6px 12px;
+    border-bottom: 1px solid #161b22;
+}
+
+.machine-code-table tr:hover {
+    background: #131d27;
+}
+
+.machine-code-table tr.active-instruction {
+    background: #1c3222;
+    border-left: 4px solid #2ea043;
+    color: #7ee787;
+    font-weight: 700;
+}
+
+.addr-col { color: #58a6ff; }
+.hex-col { color: #f0883e; font-weight: 700; }
+.instr-col { color: #e6edf3; }
+
+/* Assembly Diagnostics Box */
+.asm-status-box {
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    display: none;
+}
+
+.asm-status-box.success {
+    display: block;
+    background: #122818;
+    border: 1px solid #238636;
+    color: #7ee787;
+}
+
+.asm-status-box.error {
+    display: block;
+    background: #2b1215;
+    border: 1px solid #da3633;
+    color: #f85149;
+}
+
+/* ==========================================================================
+   MEMORY INSPECTOR & EDITOR TAB
+   ========================================================================== */
+.memory-tools-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    padding: 12px 18px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.memory-jumps {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.jump-tag {
+    background: #21262d;
+    border: 1px solid #30363d;
+    color: #58a6ff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.jump-tag:hover {
+    background: #30363d;
+}
+
+.memory-table-wrapper {
+    background: #090d12;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow-x: auto;
+    max-height: 540px;
+    overflow-y: auto;
+}
+
+.memory-grid-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-mono);
+    font-size: 13px;
+}
+
+.memory-grid-table th {
+    background: #161b22;
+    color: #8b949e;
+    padding: 8px 10px;
+    border-bottom: 1px solid #30363d;
+    font-size: 11px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.memory-grid-table td {
+    padding: 6px 8px;
+    border-bottom: 1px solid #161b22;
+    text-align: center;
+}
+
+.mem-addr-cell {
+    background: #0d1117;
+    color: #58a6ff;
+    font-weight: 700;
+    text-align: left !important;
+    position: sticky;
+    left: 0;
+    z-index: 1;
+}
+
+.mem-byte-input {
+    width: 32px;
+    background: transparent;
+    border: 1px solid transparent;
+    color: #c9d1d9;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    text-align: center;
+    padding: 2px;
+    border-radius: 3px;
+    text-transform: uppercase;
+}
+
+.mem-byte-input:hover {
+    border-color: #30363d;
+    background: #161b22;
+}
+
+.mem-byte-input:focus {
+    outline: none;
+    background: #1f2937;
+    border-color: #58a6ff;
+    color: #ffffff;
+}
+
+.mem-byte-input.has-data {
+    color: #e5c158;
+    font-weight: 700;
+}
+
+.mem-byte-input.active-pc {
+    background: #1b3d26;
+    border-color: #2ea043;
+    color: #7ee787;
+    box-shadow: 0 0 6px rgba(46, 160, 67, 0.6);
+}
+
+/* ==========================================================================
+   EXAM PRACTICE & LAB MODE
+   ========================================================================== */
+.exam-layout {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 20px;
+}
+
+@media (max-width: 990px) {
+    .exam-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+.exam-sidebar {
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 16px;
+    max-height: 800px;
+    overflow-y: auto;
+}
+
+.exam-list-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #e5c158;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.exam-category-header {
+    font-size: 11px;
+    font-weight: 800;
+    color: #8b949e;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 14px 0 6px 0;
+}
+
+.exam-question-item {
+    background: #0d1217;
+    border: 1px solid #212830;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 13px;
+    color: #c9d1d9;
+    cursor: pointer;
+    margin-bottom: 6px;
+    transition: all 0.15s ease;
+}
+
+.exam-question-item:hover {
+    background: #161e27;
+    border-color: #388bfd;
+    color: #fff;
+}
+
+.exam-question-item.active {
+    background: #1a2736;
+    border-color: #58a6ff;
+    color: #58a6ff;
+    font-weight: 700;
+}
+
+.exam-main-card {
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.exam-details-banner {
+    background: #0d131a;
+    border: 1px solid #23303e;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.exam-title-text {
+    font-size: 18px;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 8px;
+}
+
+.exam-desc-text {
+    font-size: 14px;
+    color: #8b949e;
+    line-height: 1.6;
+    margin-bottom: 14px;
+}
+
+.exam-io-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+@media (max-width: 600px) {
+    .exam-io-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.io-box {
+    background: #141b22;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 10px 14px;
+}
+
+.io-box h4 {
+    font-size: 11px;
+    font-weight: 800;
+    color: #58a6ff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+}
+
+.io-list {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: #e6edf3;
+    line-height: 1.6;
+}
+
+.exam-accordion-box {
+    background: #0b1016;
+    border: 1px solid #212c38;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.accordion-header {
+    background: #121921;
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #c9d1d9;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.accordion-body {
+    padding: 12px 16px;
+    font-size: 13px;
+    color: #8b949e;
+    display: none;
+    line-height: 1.6;
+}
+
+.accordion-body.open {
+    display: block;
+}
+
+.solution-code-block {
+    background: #05080c;
+    border: 1px solid #1c2734;
+    border-radius: 6px;
+    padding: 12px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: #7ee787;
+    white-space: pre;
+    overflow-x: auto;
+}
+
+/* Exam Evaluation Result Box */
+.eval-result-card {
+    border-radius: 8px;
+    padding: 16px;
+    display: none;
+}
+
+.eval-result-card.passed {
+    display: block;
+    background: #0f2e1a;
+    border: 2px solid #2ea043;
+    color: #7ee787;
+}
+
+.eval-result-card.failed {
+    display: block;
+    background: #331418;
+    border: 2px solid #f85149;
+    color: #ff7b72;
+}
+
+/* ==========================================================================
+   LEARN 8085 (BEGINNER'S GUIDE) TAB
+   ========================================================================== */
+.learn-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+.learn-card {
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.learn-card-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: #58a6ff;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.learn-text {
+    font-size: 13px;
+    color: #c9d1d9;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.learn-highlight {
+    background: #161f28;
+    border-left: 3px solid #58a6ff;
+    padding: 8px 12px;
+    font-size: 12px;
+    font-family: var(--font-mono);
+    color: #e6edf3;
+    margin: 8px 0;
+    border-radius: 0 4px 4px 0;
+}
+
+/* ==========================================================================
+   DIAGNOSTICS & BUILT-IN TEST SUITE TAB
+   ========================================================================== */
+.test-suite-card {
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 24px;
+}
+
+.test-item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #0d1217;
+    border: 1px solid #232c38;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+}
+
+.test-name {
+    font-weight: 700;
+    font-size: 14px;
+    color: #e6edf3;
+}
+
+.test-details {
+    font-size: 12px;
+    color: #8b949e;
+    font-family: var(--font-mono);
+    margin-top: 4px;
+}
+
+.test-badge {
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-weight: 800;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+}
+
+.test-badge.pass {
+    background: #238636;
+    color: #ffffff;
+}
+
+.test-badge.fail {
+    background: #da3633;
+    color: #ffffff;
+}
+
+/* Footer */
+.app-footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+    color: #6e7681;
+    border-top: 1px solid #21262d;
+    margin-top: 40px;
+}
